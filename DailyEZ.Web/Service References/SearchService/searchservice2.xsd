@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/SearchServiceLibrary.Models" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/SearchServiceLibrary.Models" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ArrayOfSearchResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SearchResult" nillable="true" type="tns:SearchResult" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSearchResult" nillable="true" type="tns:ArrayOfSearchResult" />
+  <xs:complexType name="SearchResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Link_ID" type="xs:int" />
+      <xs:element minOccurs="0" name="Link_Title" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Link_URL" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Page_ID" type="xs:int" />
+      <xs:element minOccurs="0" name="Page_Title" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SearchResult" nillable="true" type="tns:SearchResult" />
+</xs:schema>

@@ -1,0 +1,13 @@
+C:\Users\Kyle\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\bin\DailyEZ.Web.dll
+C:\Users\Kyle\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\bin\DailyEZ.Web.XmlSerializers.dll
+C:\Users\Kyle\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\bin\DailyEZ.Web.pdb
+C:\Users\Kyle\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\bin\Elmah.dll
+C:\Users\Kyle\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\bin\Recaptcha.Web.dll
+C:\Users\Kyle\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\obj\Release\DailyEZ.Web.csprojResolveAssemblyReference.cache
+C:\Users\Kyle\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\obj\Release\DailyEZ.Web.dll
+C:\Users\Kyle\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\obj\Release\DailyEZ.Web.pdb
+C:\Users\Kyle\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\obj\Release\DailyEZ.Web.XmlSerializers.dll
+C:\Users\Kyle\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\bin\Antlr3.Runtime.dll
+C:\Users\Kyle\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\Kyle\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\bin\System.Web.Optimization.dll
+C:\Users\Kyle\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\bin\WebGrease.dll

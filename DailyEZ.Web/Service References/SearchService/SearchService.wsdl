@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="SearchService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://dailyez.com/SearchService/searchservice.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://dailyez.com/SearchService/searchservice.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://dailyez.com/SearchService/searchservice.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/SearchServiceLibrary" />
+      <xsd:import schemaLocation="http://dailyez.com/SearchService/searchservice.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://dailyez.com/SearchService/searchservice.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/SearchServiceLibrary.Models" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ISearchService_GetAllSubFolders_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllSubFolders" />
+  </wsdl:message>
+  <wsdl:message name="ISearchService_GetAllSubFolders_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllSubFoldersResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISearchService_Search_InputMessage">
+    <wsdl:part name="parameters" element="tns:Search" />
+  </wsdl:message>
+  <wsdl:message name="ISearchService_Search_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISearchService_SearchAds_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchAds" />
+  </wsdl:message>
+  <wsdl:message name="ISearchService_SearchAds_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchAdsResponse" />
+  </wsdl:message>
+  <wsdl:message name="ISearchService_GetAd_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAd" />
+  </wsdl:message>
+  <wsdl:message name="ISearchService_GetAd_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAdResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ISearchService">
+    <wsdl:operation name="GetAllSubFolders">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISearchService/GetAllSubFolders" message="tns:ISearchService_GetAllSubFolders_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISearchService/GetAllSubFoldersResponse" message="tns:ISearchService_GetAllSubFolders_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Search">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISearchService/Search" message="tns:ISearchService_Search_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISearchService/SearchResponse" message="tns:ISearchService_Search_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchAds">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISearchService/SearchAds" message="tns:ISearchService_SearchAds_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISearchService/SearchAdsResponse" message="tns:ISearchService_SearchAds_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAd">
+      <wsdl:input wsaw:Action="http://tempuri.org/ISearchService/GetAd" message="tns:ISearchService_GetAd_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/ISearchService/GetAdResponse" message="tns:ISearchService_GetAd_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_ISearchService" type="tns:ISearchService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetAllSubFolders">
+      <soap:operation soapAction="http://tempuri.org/ISearchService/GetAllSubFolders" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Search">
+      <soap:operation soapAction="http://tempuri.org/ISearchService/Search" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SearchAds">
+      <soap:operation soapAction="http://tempuri.org/ISearchService/SearchAds" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAd">
+      <soap:operation soapAction="http://tempuri.org/ISearchService/GetAd" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SearchService">
+    <wsdl:port name="BasicHttpBinding_ISearchService" binding="tns:BasicHttpBinding_ISearchService">
+      <soap:address location="http://dailyez.com/SearchService/searchservice.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

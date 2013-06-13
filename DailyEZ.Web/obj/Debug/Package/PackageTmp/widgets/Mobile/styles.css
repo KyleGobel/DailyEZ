@@ -1,0 +1,164 @@
+﻿html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, Geneva, sans-serif;
+}
+
+.noUnderline { text-decoration: none; }
+
+.noBorder { border: none; }
+
+.center {
+    margin: auto;
+    width: 100%;
+    text-align: center;
+}
+
+#AdHelper {
+    color: green;
+    font-size: 10px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.topHeader {
+    background-color: white;
+    color: black;
+    width: 100%;
+    font-family: arial;
+    font-size: 14pt;
+    text-align: center;
+    padding-top: 5px;
+    margin-top: -5px;
+    padding-bottom: 10px;
+    /*      border-bottom: solid 2px blue;*/
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Helvetica Neue', Helvetica, Arial, Geneva, sans-serif;
+}
+
+.searchBox {
+    -webkit-box-shadow: rgba(255, 255, 255, 0.65625) 0 1px 1px, rgba(0, 0, 0, 0.0976563) 0 1px 4px inset;
+    background-color: #FAFAFA;
+    background-image: url(http://static.dailyez.com/widgets/Mobile/images/search_glyph.png);
+    background-position: 0 6px;
+    background-repeat: no-repeat no-repeat;
+    border: 1px solid #AEB3B8;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    box-shadow: rgba(255, 255, 255, 0.65625) 0 1px 1px, rgba(0, 0, 0, 0.0976563) 0 1px 4px inset;
+    color: #2275BB;
+    font-family: 'Helvetica Neue', Helvetica, Arial, Geneva, sans-serif;
+    font-size: 16px;
+    outline: none;
+    padding: 8px 8px 8px 34px;
+    width: 72%;
+    margin-bottom: 10px;
+}
+
+#accordion {
+    list-style: none;
+    padding: 0 0 0 0;
+    width: 100%;
+}
+
+#accChangeComm {
+    list-style: none;
+    padding: 0 0 0 0;
+    width: 100%;
+}
+
+#accChangeComm div {
+    list-style: none;
+    padding: 0 0 0 0;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.0976563) 0 1px 2px, #FFFFFF 0 1px 1px inset;
+    -webkit-font-smoothing: antialiased;
+    background-attachment: initial, initial;
+    background-clip: initial, initial;
+    background-image: url(http://static.dailyez.com/widgets/Mobile/images/aside_accordion_indicator_default.png), -webkit-gradient(linear, 0 0%, 0 100%, from(#F7F7F7), to(#EDEDED));
+    background-origin: initial, initial;
+    background-position: 100% 50%;
+    background-repeat: no-repeat;
+    border: 1px solid #ACB3B7;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    box-shadow: rgba(0, 0, 0, 0.0976563) 0 1px 2px, #FFFFFF 0 1px 1px inset;
+    color: #464951;
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 6px 8px;
+    position: relative;
+    text-shadow: #FFFFFF 0 1px 1px;
+    z-index: 2;
+}
+
+#accChangeComm ul { list-style: none; }
+
+#accChangeComm ul { display: none; }
+
+#accChangeComm ul li {
+    font-weight: normal;
+    cursor: auto;
+    background-color: #fff;
+    padding: 0 0 0 0;
+    margin-left: -25px;
+    margin-top: 5px;
+    margin-bottom: 3px;
+}
+
+#accordion a { text-decoration: none; }
+
+#accordion div {
+    list-style: none;
+    padding: 0 0 0 0;
+    -webkit-box-shadow: rgba(0, 0, 0, 0.0976563) 0 1px 2px, #FFFFFF 0 1px 1px inset;
+    -webkit-font-smoothing: antialiased;
+    background-attachment: initial, initial;
+    background-clip: initial, initial;
+    background-image: url(http://static.dailyez.com/widgets/Mobile/images/aside_accordion_indicator_default.png), -webkit-gradient(linear, 0 0%, 0 100%, from(#F7F7F7), to(#EDEDED));
+    background-origin: initial, initial;
+    background-position: 100% 50%;
+    background-repeat: no-repeat;
+    border: 1px solid #ACB3B7;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    box-shadow: rgba(0, 0, 0, 0.0976563) 0 1px 2px, #FFFFFF 0 1px 1px inset;
+    color: #464951;
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 16px 8px;
+    position: relative;
+    text-shadow: #FFFFFF 0 1px 1px;
+    z-index: 2;
+}
+
+#accordion ul { list-style: none; }
+
+#accordion ul { display: none; }
+
+#accordion ul li {
+    font-weight: normal;
+    cursor: auto;
+    background-color: #fff;
+    padding: 0 0 0 0;
+    margin-left: 30px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+#accordion a { text-decoration: none; }
+
+.menu {
+    margin: auto;
+    width: 80%;
+}
