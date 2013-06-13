@@ -6,9 +6,10 @@
 *.gpState
 *.sln
 *.suo
-/bin
-/obj
+bin/
+obj/
 /packages
+/_ReSharper.DailyEZ
 /Properties
 /Scripts
 
