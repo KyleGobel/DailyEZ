@@ -20,3 +20,14 @@ C:\Users\kgobe_000\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\bin\
 C:\Users\kgobe_000\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\obj\Debug\DailyEZ.Web.csprojResolveAssemblyReference.cache
 C:\Users\kgobe_000\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\obj\Debug\DailyEZ.Web.dll
 C:\Users\kgobe_000\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\obj\Debug\DailyEZ.Web.pdb
+C:\Users\Administrator\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\bin\DailyEZ.Web.dll
+C:\Users\Administrator\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\bin\DailyEZ.Web.pdb
+C:\Users\Administrator\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\bin\Antlr3.Runtime.dll
+C:\Users\Administrator\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\bin\Elmah.dll
+C:\Users\Administrator\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\Administrator\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\bin\Recaptcha.Web.dll
+C:\Users\Administrator\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\bin\System.Web.Optimization.dll
+C:\Users\Administrator\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\bin\WebGrease.dll
+C:\Users\Administrator\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\obj\Debug\DailyEZ.Web.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\obj\Debug\DailyEZ.Web.dll
+C:\Users\Administrator\Dropbox\JetNett\Projects\Web\DailyEZ\DailyEZ\DailyEZ.Web\obj\Debug\DailyEZ.Web.pdb

@@ -5,6 +5,8 @@
 *.csproj
 *.gpState
 *.sln
+*.cache
+*.pdb
 *.suo
 bin/
 obj/
