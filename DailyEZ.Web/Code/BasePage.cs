@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Configuration;
 using System.Web.UI;
+using JetNettApi.Data;
+using Ninject;
 
 namespace DailyEZ.Web.Code
 {
@@ -8,6 +10,10 @@ namespace DailyEZ.Web.Code
     {
         public static com.dailyez.Service WebService = null;
         public static com.dailyez.Daily_EZ DailyEZObject = null;
+
+        [Inject]
+        public JetNettApiUow Uow { get; set; }
+        
 
         public BasePage()
         {
@@ -21,7 +27,7 @@ namespace DailyEZ.Web.Code
 
             int clientID = Utility.GetIntFromCookie(Request, "clientID");
             //if (HttpContext.Current.IsDebuggingEnabled) 
-            //clientID = 777;
+            clientID = 777;
             if (clientID == 0)
             {
                 //DON'T TOUCH ANYTHING BETWEEN THESE LINES
@@ -60,6 +66,7 @@ namespace DailyEZ.Web.Code
 
 
             DailyEZObject = WebService.GetDailyEZByClientID(ConfigurationManager.AppSettings["webServiceKey"], clientID);
+            
         }
 
         //TODO: Get rid of this section

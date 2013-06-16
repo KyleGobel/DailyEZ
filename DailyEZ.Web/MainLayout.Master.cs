@@ -12,6 +12,16 @@ namespace DailyEZ.Web
         protected void Page_Load(object sender, EventArgs e)
         {
             var client = BasePage.WebService.GetClient(ConfigurationManager.AppSettings["webServiceKey"], BasePage.DailyEZObject.Client_ID);
+
+            if (client == null)
+            {
+                var ex = new ArgumentNullException("com.DailyEZ.Client", "Client Object is Null");
+                ErrorLog.GetDefault(HttpContext.Current).Log(new Error(ex));
+
+                return;
+            }
+            
+                
             Page.Title = client.Website;
             AnalyticsKey = client.Analytics_Key;
 

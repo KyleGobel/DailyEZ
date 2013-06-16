@@ -3,13 +3,40 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Net;
+using System.Net.Configuration;
+using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Configuration;
 using Elmah;
+using JetNettApi.Data;
 
 namespace DailyEZ.Web.Code
 {
     public class Utility
     {
+        /// <summary>
+        /// Given a string this method will attempt to extract a number from anywhere in the string. Will return absolute
+        /// value of the number found.
+        /// </summary>
+        /// <param name="str">string that may or may not contain a number</param>
+        /// <param name="number">out parameter of the number found, 0 if nothing found</param>
+        /// <returns>True if a number was found, or False if there was no number found in the str or the str was null</returns>
+        public static bool ExtractNumberFromString(string str, out int number)
+        {
+            number = 0;
+
+            if (string.IsNullOrEmpty(str))
+                return false;
+            //Extract Number from str
+            var resultString = Regex.Match(str, @"\d+").Value;
+            //attempt to parse the number to pageId
+            int.TryParse(resultString, out number);
+            //return true if we found a number, else false
+            return number > 0;
+        }
+
         public static int TryParseIntWithDefault(string intToParse, int defaultValue)
         {
             var outInt = 0;
@@ -97,6 +124,7 @@ namespace DailyEZ.Web.Code
         }
         public static bool UrlExists(string url)
         {
+            if (string.IsNullOrEmpty(url)) return false;
             try
             {
                 new System.Net.WebClient().DownloadData(url);
@@ -110,42 +138,32 @@ namespace DailyEZ.Web.Code
                     throw;
             }
         }
-        public static int GetPageIDByRoute(string route)
+
+        /// <summary>
+        /// Gets Email/Smtp settings from Web.Config file 
+        /// </summary>
+        /// <returns>Object which contains the smtp settings</returns>
+        private static SmtpSection GetSmtpSettings()
         {
-            var id = 0;
-            SqlDataReader reader = null;
+            var configurationFile = WebConfigurationManager.OpenWebConfiguration("~/web.config");
+            var mailSection = configurationFile.GetSectionGroup("system.net/mailSettings") as MailSettingsSectionGroup;
+            return mailSection != null ? mailSection.Smtp : null;
 
-
-            using (var connection = new SqlConnection(ConfigurationManager.AppSettings["connStr"]))
-            {
-                using (var command = new SqlCommand("SELECT ID FROM Pages WHERE Route = @route"))
-                {
-                    command.Parameters.AddWithValue("@route", route);
-
-                    try
-                    {
-                        connection.Open();
-                        command.Connection = connection;
-                        reader = command.ExecuteReader();
-
-                        if (reader.HasRows)
-                        {
-                            reader.Read();
-                            id = (int)reader["ID"];
-                        }
-                    }
-                    finally
-                    {
-                        if (reader != null)
-                            reader.Close();
-                    }
-
-                }
-
-            }
-
-            return id;
         }
+        public static void SendEmail(MailMessage message)
+        {
+            var settings = GetSmtpSettings();
+            var emailClient = new SmtpClient
+            {
+                Credentials = new NetworkCredential(settings.Network.UserName, settings.Network.Password),
+                Port = settings.Network.Port,
+                Host = settings.Network.Host,
+                EnableSsl = settings.Network.EnableSsl
+            };
+
+            emailClient.Send(message);
+        }
+
         public static string EncodeURL(string url)
         {
 
@@ -175,54 +193,11 @@ namespace DailyEZ.Web.Code
             } while (swapped);
         }
 
-        public static int GetLinkPage1(HttpRequest request)
-        {
-            int id1 = Utility.GetIntFromQueryString(request, "id1");
+      
 
-            if (id1 == 0)
-            {
-                com.dailyez.Service service = new com.dailyez.Service();
-                com.dailyez.Daily_EZ dailyEZ =
-                    service.GetDailyEZByClientID(ConfigurationManager.AppSettings["webServiceKey"],
-                                                 Utility.GetIntFromCookie(request, "clientID"));
-                if (dailyEZ != null)
-                    id1 = dailyEZ.Link_Page_ID_1;
-            }
-            return id1;
-        }
 
-        public static int GetLinkPage2(HttpRequest request)
-        {
-            int id2 = Utility.GetIntFromQueryString(request, "id2");
 
-            if (id2 == 0)
-            {
-                com.dailyez.Service service = new com.dailyez.Service();
-                com.dailyez.Daily_EZ dailyEZ =
-                    service.GetDailyEZByClientID(ConfigurationManager.AppSettings["webServiceKey"],
-                                                 Utility.GetIntFromCookie(request, "clientID"));
-                if (dailyEZ != null)
-                    id2 = dailyEZ.Link_Page_ID_2;
-            }
-            return id2;
-        }
-
-        public static int GetTopLeftIndex(HttpRequest request)
-        {
-            int topLeftIndex = Utility.GetIntFromQueryString(request, "index");
-
-            if (topLeftIndex == 0)
-            {
-                com.dailyez.Service service = new com.dailyez.Service();
-                com.dailyez.Daily_EZ dailyEZ =
-                    service.GetDailyEZByClientID(ConfigurationManager.AppSettings["webServiceKey"],
-                                                 Utility.GetIntFromCookie(request, "clientID"));
-                if (dailyEZ != null)
-                    topLeftIndex = dailyEZ.Left_Index_ID;
-            }
-
-            return topLeftIndex;
-        }
+    
 
         public static SearchResult[] ConvertToLocalSearchResult(SearchService.SearchResult[] results)
         {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using System.Net;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -10,162 +9,124 @@ namespace DailyEZ.Web
 {
     public partial class Community : BasePage
     {
-        int _pageID = 0;
-        string _senderURL = "";
+        
+        string _senderUrl = "";
         protected void Page_Load(object sender, EventArgs e)
         {
-            //write the page id on top of the page in the comments
-            //Response.Write("<!--" +DailyEZUtility.GetIntFromQueryString(Request, "id") + "-->" );
-            if (Page.RouteData.Values["PageName"] == null)
+            var page = GetPageFromRoute();
+
+            if (page == null)
                 return;
-
-            var resultString = Regex.Match(Page.RouteData.Values["PageName"].ToString(), @"\d+").Value;
-            int.TryParse(resultString, out _pageID);
-
-            if (_pageID == 0)
-                _pageID = Utility.GetPageIDByRoute(Page.RouteData.Values["PageName"].ToString());
-
-            RenderLinkSection();
-            RenderAds();
+            RenderLinkSection(page);
+            RenderAds(page);
 
             if (!Page.IsPostBack)
             {
-                _senderURL = Request.ServerVariables["SERVER_NAME"] + "" + Request.ServerVariables["URL"];
-                Utility.SaveCookie(Response, Request, "referPage", _senderURL);
+                _senderUrl = Request.ServerVariables["SERVER_NAME"] + "" + Request.ServerVariables["URL"];
+                Utility.SaveCookie(Response, Request, "referPage", _senderUrl);
             }
         }
 
+        private JetNettApi.Models.Page GetPageFromRoute()
+        {
+            var pageId = 0;
+
+            //Error check to see if the page route is null, in which case just return
+            if (Page.RouteData.Values["PageName"] == null)
+                return null;
+
+            var route = Page.RouteData.Values["PageName"].ToString();
+
+            //if we fail getting pageId from route string, try looking up the page by route
+            return !Utility.ExtractNumberFromString(route, out pageId) ? Uow.Pages.GetByRoute(route) : Uow.Pages.GetById(pageId);
+        }
 
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-                SendMail();
+           SendMail();
         }
         private void SendMail()
         {
+            var message = new MailMessage
+                              {
+                                  Subject = "Recommend a Website", 
+                                  SubjectEncoding = System.Text.Encoding.UTF8,
+                                  IsBodyHtml =  true,
+                                  Priority = MailPriority.Normal,
+                                  BodyEncoding = System.Text.Encoding.UTF8,
+                                  
+                              };
 
-            var message = new MailMessage();
 
             message.To.Add("jetnettone@gmail.com");
-
-            message.From = new MailAddress("jetnett@dailyez.com", "JetNett Corporation",
-                                           System.Text.Encoding.UTF8);
+            message.From = new MailAddress("jetnett@dailyez.com", "JetNett Corporation",System.Text.Encoding.UTF8);
 
 
-            message.Subject = "Recommend a Website";
+            message.Body =  "Website Name: " + tbName.Text + 
+                            "<br/>Website URL: " + tbURL.Text + 
+                            "<br/><Br/>was recommeneded from " + _senderUrl;
 
+            Utility.SendEmail(message);
 
-
-            message.SubjectEncoding = System.Text.Encoding.UTF8;
-            message.Body = "Website Name: " + tbName.Text + "<br/>Website URL: " + tbURL.Text + "<br/><Br/>was recommeneded from " + Utility.GetStringFromCookie(Request, "referPage");
-
-            message.BodyEncoding = System.Text.Encoding.UTF8;
-
-            message.IsBodyHtml = true;
-
-            message.Priority = MailPriority.Normal;
-
-            var emailClient = new SmtpClient
-                {
-                    Credentials = new NetworkCredential("jetnettone@gmail.com", "ep69k55ax"),
-                    Port = 587,
-                    Host = "smtp.gmail.com",
-                    EnableSsl = true
-                };
-
-            emailClient.Send(message);
 
         }
-        private void RenderAds()
+        private void RenderAds(JetNettApi.Models.Page page)
         {
+            var aga = Uow.AdGroupAssignments.GetAdGroup(page, Uow.Clients.GetById(DailyEZObject.Client_ID));
 
-
-            com.dailyez.Ad_Page_Relationship rel = null;
-
-            //try most specific --clientID AND pageID
-            rel = WebService.GetAdPageRelationshipByClientIDAndPageID(ConfigurationManager.AppSettings["webServiceKey"],
-                                                                   DailyEZObject.Client_ID, _pageID);
-
-            //broaden - just the page
-            if (rel == null)
-                rel = WebService.GetAdPageRelationshipByPageIDOnly(ConfigurationManager.AppSettings["webServiceKey"],
-                                                                _pageID);
-
-            //broaden - clientID
-            if (rel == null)
-                rel = WebService.GetAdPageRelationshipByClientIDOnly(ConfigurationManager.AppSettings["webServiceKey"],
-                                                                  DailyEZObject.Client_ID);
-
-
-            //nothing found, just return a false
-            if (rel == null)
-                return;
-
-
-            //if the relationship found has an ad group, and we're not using the broker code
-            if (rel.Ad_Group > 0 && !rel.Use_Broker_Code)
+            if (aga != null && !aga.UseBrokerCode)
             {
-
-                //store ad group in our local variable
-                var adGroup = rel.Ad_Group;
-                litAds.Text = string.Format(@"<script type=""text/javascript"" src=""widgets/AdGroup/AdGroupWidget.ashx?widgetID=1&adGroup={0}&autoRotate={1}""></script><div id=""dailyEZ-com-ad-group1""></div>",
-                    adGroup, "true");
+                litAds.Text = string.Format(@"<script>require(['widgets/AdGroup/AdGroupWidget.ashx?widgetID=1&adGroup={0}&autoRotate={1}']);</script><div id='dailyEZ-com-ad-group1'></div>",
+                    aga.AdGroup, "true");
             }
         }
-        private void RenderLinkSection()
+        private void RenderLinkSection(JetNettApi.Models.Page page)
         {
-            var id = _pageID;
-            if (id == 0)
-                return;
-
-            com.dailyez.Page page = BasePage.WebService.GetPage(ConfigurationManager.AppSettings["webServiceKey"], id);
-            if (page == null)
+            var id = page.Id;
+           
+            if (!string.IsNullOrEmpty(page.CanonicalUrl))
             {
-                Response.Write("Page not found.  Page ID = " + id);
-                return;
+                litCanonicalLink.Text = "<link rel=\"canonical\" href=\"" + HttpUtility.HtmlEncode(page.CanonicalUrl) + "\"/>";
             }
-            if (!string.IsNullOrEmpty(page.Canonical_URL))
+            if (!string.IsNullOrEmpty(page.FooterHtml))
             {
-                litCanonicalLink.Text = "<link rel=\"canonical\" href=\"" + HttpUtility.HtmlEncode(page.Canonical_URL) + "\"/>";
+                litFooterHtml.Text = "<br/>" + HttpUtility.HtmlEncode(page.FooterHtml) + "<br/><br/>";
             }
-            if (!string.IsNullOrEmpty(page.Footer_HTML))
+            if (!string.IsNullOrEmpty(page.HeaderHtml))
             {
-                litFooterHtml.Text = "<br/>" + HttpUtility.HtmlEncode(page.Footer_HTML) + "<br/><br/>";
-            }
-            if (!string.IsNullOrEmpty(page.Extra_HTML))
-            {
-                litExtraHtml.Text = HttpUtility.HtmlEncode(page.Extra_HTML) + "<br/><br/>";
+                litExtraHtml.Text = HttpUtility.HtmlEncode(page.HeaderHtml) + "<br/><br/>";
             }
 
-            try
-            {
-                if (page.MetaKeys.Length == 0)
+           
+                if (string.IsNullOrEmpty(page.MetaKeys))
                     page.MetaKeys = page.Title;
-                if (page.MetaDesc.Length == 0)
+                if (string.IsNullOrEmpty(page.MetaDesc))
                     page.MetaDesc = page.Title;
                 litMeta.Text = "<meta name=\"keywords\" content=\"" + page.MetaKeys + "\"/><meta name=\"description\" content=\"" + page.MetaDesc + "\"/>";
-            }
-            catch
-            {
-                litMeta.Text = "<!--Invalid Meta Keys/Desc entered-->";
-            }
+         
 
             if (string.IsNullOrEmpty(page.Title))
             {
                 page.Title = "";
-                Response.Write("Page Title not found - PageID = " + id);
+                litPageHeader.Text = "Page Title not found - PageID = " + page.Id;
+            }
+            else
+            {
+                litPageHeader.Text = HttpUtility.HtmlEncode(page.Title);
             }
 
+            //TODO: Get rid of this shit
             string startTitle =
                 BasePage.WebService.GetClient(ConfigurationManager.AppSettings["webServiceKey"], DailyEZObject.Client_ID).
                     Website;
-
             Page.Title = page.Title + " - " + startTitle;
-            litPageHeader.Text = HttpUtility.HtmlEncode(page.Title);
+
+            
             com.dailyez.Link[] links = BasePage.WebService.GetLinksFromPage(ConfigurationManager.AppSettings["webServiceKey"], id);
 
 
-            if (page.Auto_Ordering)
+            if (page.AutoOrdering)
                 Utility.BubbleSortList(links);
 
             string htm = "\n\t\t<!-- renderLinkSection() generated -->";
