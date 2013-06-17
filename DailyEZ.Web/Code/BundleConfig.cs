@@ -9,7 +9,6 @@ namespace DailyEZ.Web.Code
 
             //BundleTable.EnableOptimizations = true;
 
-
             //jquery
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include("~/js/vendor/jquery-{version}.js"));
 

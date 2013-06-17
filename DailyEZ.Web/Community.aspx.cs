@@ -77,7 +77,7 @@ namespace DailyEZ.Web
 
             if (aga != null && !aga.UseBrokerCode)
             {
-                litAds.Text = string.Format(@"<script>require(['widgets/AdGroup/AdGroupWidget.ashx?widgetID=1&adGroup={0}&autoRotate={1}']);</script><div id='dailyEZ-com-ad-group1'></div>",
+                litAds.Text = string.Format(ConfigurationManager.AppSettings["adsScriptTag"],
                     aga.AdGroup, "true");
             }
         }

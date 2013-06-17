@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Web;
 using System.Web.UI;
 using JetNettApi.Data;
 using Ninject;
@@ -26,8 +27,8 @@ namespace DailyEZ.Web.Code
             WebService = new com.dailyez.Service();
 
             int clientID = Utility.GetIntFromCookie(Request, "clientID");
-            //if (HttpContext.Current.IsDebuggingEnabled) 
-            clientID = 777;
+            if (HttpContext.Current.IsDebuggingEnabled) 
+                clientID = 777;
             if (clientID == 0)
             {
                 //DON'T TOUCH ANYTHING BETWEEN THESE LINES
