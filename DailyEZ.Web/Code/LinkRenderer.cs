@@ -49,18 +49,24 @@ namespace DailyEZ.Web.Code
 
         }
 
+        /// <summary>
+        /// Cleans the title of all mappings, and Html Encodes it.  Basically it gets the title 
+        /// ready for rendering
+        /// </summary>
+        /// <param name="link">The link with the title object</param>
+        /// <returns>a clean string ready for html rendering</returns>
         public static string GetLinkTitle(Link link)
         {
+            if (link == null || link.Title == null)
+                return "";
             //clean out our annotations or attributes
-            return HttpUtility.HtmlEncode(link.Title
-                    .Replace("*BOLD*", "")
-                    .Replace("[CONTENT]", "")
-                    .Replace("[BOLD]", "")
-                    .Replace("*bold*", "")
-                    .Replace("[content]", "")
-                    .Replace("[bold]", "")
-                    .Replace("[BREAK]", "")
-                    .Replace("[break]", ""));
+            var cleanTitle = FlagMappingsHelpers.RemoveMappingsFromString(
+                new List<Dictionary<string, string>>()
+                    {
+                        ExtraFlagMappings,
+                        StyleFlagMappings
+                    }, link.Title);
+            return HttpUtility.HtmlEncode(cleanTitle);
         }
     }
 }
