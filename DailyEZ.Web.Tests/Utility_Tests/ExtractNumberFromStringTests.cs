@@ -1,8 +1,7 @@
-﻿using System.Text.RegularExpressions;
-using DailyEZ.Web.Code;
+﻿using DailyEZ.Web.Code;
 using NUnit.Framework;
 
-namespace DailyEZ.Web.Tests.Utility_Tests
+namespace DailyEZ.Web.UnitTests.Utility_Tests
 {
     [TestFixture(null, false, 0)]
     [TestFixture("899Wisconsin", true, 899)]
