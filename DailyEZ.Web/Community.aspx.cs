@@ -45,7 +45,7 @@ namespace DailyEZ.Web
         }
 
 
-        protected void Button1_Click(object sender, EventArgs e)
+        protected void ButtonSubmitWebsiteClick(object sender, EventArgs e)
         {
            SendMail();
         }

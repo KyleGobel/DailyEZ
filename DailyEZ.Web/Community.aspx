@@ -22,7 +22,7 @@
         
         $(document).ready(function () {
             $("#captchaText").bind("keyup", verifyCaptcha);
-            $("#Button1").attr("disabled", "disabled");
+            $("#ButtonSubmitWebsite").attr("disabled", "disabled");
         });
         var verifyCaptcha = function () {
             var value = $("#captchaText").val();
@@ -33,10 +33,10 @@
                 url: "captcha/VerifyCaptcha.aspx",
                 success: function (response) {
                     if (response == "true") {
-                        $("#Button1").removeAttr("disabled");
+                        $("#ButtonSubmitWebsite").removeAttr("disabled");
                     }
                     else {
-                        $("#Button1").attr("disabled", "disabled");
+                        $("#ButtonSubmitWebsite").attr("disabled", "disabled");
                     }
                 }
             });
@@ -103,7 +103,7 @@
     </tr>
     <tr>
         <td colspan="2" style="margin-top:10px;">
-            <asp:Button ID="Button1" ClientIDMode="Static" runat="server" onclick="Button1_Click" 
+            <asp:Button ID="ButtonSubmitWebsite" ClientIDMode="Static" runat="server" onclick="ButtonSubmitWebsiteClick" 
                 Text="Submit Website" CssClass="btn btn-primary btn-large" Width="200px" />
         </td>
     </tr>
