@@ -20,7 +20,46 @@ namespace DailyEZ.Web.Code
                                                                        {"[bold]", "font-weight:bold;"}
                                                                    };
 
-    
+
+        /// <summary>
+        /// Get an Html block of anchor tags from a links object list
+        /// </summary>
+        /// <param name="links">The list of links in which to create the block of html</param>
+        /// <param name="start">The starting index of the link where you want to start the block of html</param>
+        /// <param name="finish">The ending index of the link where you want to stop the block of html</param>
+        /// <returns>a string of html ready to render</returns>
+        public static string GetLinksHtml(List<Link> links, int start, int finish)
+        {
+            var htm = "";
+            for (var i = start; i < finish; i++)
+            {
+                var link = links[i];
+                var linkHtml = "";
+                if (link.IsLink)
+                {
+                    linkHtml = string.Format(@"<a style='{0}' rel='{5}' target='{1}' href='{2}'>{3}</a>{4}<br/>",
+                                             GetLinkStyle(link),
+                                             GetLinkTarget(link),
+                                             GetLinkHref(link),
+                                             GetLinkTitle(link),
+                                             GetLinkExtra(link),
+                                             GetLinkRel(link));
+                }
+                else
+                {
+                    linkHtml = string.Format(
+                        @"<span class=""header""><h2 style=""{0} font-size:16px; margin:0"">{1}{2}</h2></span>",
+                        GetLinkStyle(link),
+                        GetLinkTitle(link),
+                        GetLinkExtra(link)
+                        );
+                }
+                htm += linkHtml;
+            }
+            return htm;
+        }
+
+
         /// <summary>
         /// Parses link properties for any flags, and returns approprite extra html
         /// </summary>

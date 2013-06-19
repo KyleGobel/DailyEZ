@@ -107,7 +107,7 @@ namespace DailyEZ.Web
             if (links.Count() <= 20)
             {
                 htm += "\n\t\t<div class='span8'>";
-                htm += GetLinksHtml(links, 0, links.Count);
+                htm += LinkRenderer.GetLinksHtml(links, 0, links.Count);
 
                 htm += "\n\t\t</div>";
             }
@@ -118,9 +118,9 @@ namespace DailyEZ.Web
                 if (((links.Count) % 2) == 1)
                     colLength++;
                 htm += "\n\t\t<div class='span4'>";
-                htm += GetLinksHtml(links, 0, colLength);
+                htm += LinkRenderer.GetLinksHtml(links, 0, colLength);
                 htm += "\n\t\t</div>\n\t\t<div class='span4'>";
-                htm += GetLinksHtml(links, colLength, links.Count);
+                htm += LinkRenderer.GetLinksHtml(links, colLength, links.Count);
                 htm += "\n\t\t</div>";
             }
 
@@ -128,36 +128,7 @@ namespace DailyEZ.Web
             litLinkContent.Text = htm;
         }
 
-        private string GetLinksHtml(List<Link> links, int start, int finish)
-        {
-            var htm = "";
-            for(var i=start; i<finish; i++)
-            {
-                var link = links[i];
-                var linkHtml = "";
-                if (link.IsLink)
-                {
-                    linkHtml = string.Format(@"<a style='{0}' rel='{5}' target='{1}' href='{2}'>{3}</a>{4}<br/>",
-                                             LinkRenderer.GetLinkStyle(link),
-                                             LinkRenderer.GetLinkTarget(link),
-                                             LinkRenderer.GetLinkHref(link),
-                                             LinkRenderer.GetLinkTitle(link),
-                                             LinkRenderer.GetLinkExtra(link),
-                                             LinkRenderer.GetLinkRel(link));
-                }
-                else
-                {
-                    linkHtml = string.Format(
-                        @"<span class=""header""><h2 style=""{0} font-size:16px; margin:0"">{1}{2}</h2></span>",
-                        LinkRenderer.GetLinkStyle(link),
-                        LinkRenderer.GetLinkTitle(link),
-                        LinkRenderer.GetLinkExtra(link)
-                        );
-                }
-                htm += linkHtml;
-            }
-            return htm;
-        }
+       
 
      
 
