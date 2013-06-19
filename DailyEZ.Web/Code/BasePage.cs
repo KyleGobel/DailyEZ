@@ -4,17 +4,19 @@ using System.Web;
 using System.Web.UI;
 using JetNettApi.Data;
 using Ninject;
-
+using System.Linq;
 namespace DailyEZ.Web.Code
 {
     public class BasePage : Page
     {
         public static com.dailyez.Service WebService = null;
         public static com.dailyez.Daily_EZ DailyEZObject = null;
+        public static JetNettApi.Models.DailyEZ DailyEZObject1 = null;
 
         [Inject]
         public JetNettApiUow Uow { get; set; }
-        
+
+        public JetNettApi.Models.Client JetNettClient { get; set; }
 
         public BasePage()
         {
@@ -40,8 +42,9 @@ namespace DailyEZ.Web.Code
                 //url = url.Remove(url.LastIndexOf("/", StringComparison.Ordinal)).Replace("/DailyEZ", "").Replace("/widgets", "");
                 url = "http://" + uri.Host;
                 //url = "http://mary.dailyez.com";
-                clientID = WebService.GetClientIDFromUserFriendlyURL(ConfigurationManager.AppSettings["webServiceKey"],
-                                                                     url);
+                var dailyEZ = Uow.DailyEZs.GetAll().SingleOrDefault(d => d.UserFriendlyUrl.ToLower() == url.ToLower());
+                if (dailyEZ != null)
+                    clientID = dailyEZ.ClientId;
                 //--------------------------------------------------- 
 
 
@@ -64,8 +67,8 @@ namespace DailyEZ.Web.Code
                     //                      HttpUtility.UrlEncode(url));
                 }
             }
-
-
+            JetNettClient = Uow.Clients.GetById(clientID);
+            DailyEZObject1 = Uow.DailyEZs.GetAll().Single(d => d.ClientId == JetNettClient.Id);
             DailyEZObject = WebService.GetDailyEZByClientID(ConfigurationManager.AppSettings["webServiceKey"], clientID);
             
         }

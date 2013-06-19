@@ -4,6 +4,9 @@ using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Web;
 using DailyEZ.Web.Code;
+using JetNettApi.Models;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace DailyEZ.Web
 {
@@ -77,65 +80,42 @@ namespace DailyEZ.Web
 
             if (aga != null && !aga.UseBrokerCode)
             {
-                litAds.Text = string.Format(ConfigurationManager.AppSettings["adsScriptTag"],
-                    aga.AdGroup, "true");
+                //script tag takes 2 query string params, adGroup and autoRotate, this grabs
+                //script tag from web.config and populates the values
+                litAds.Text = string.Format(ConfigurationManager.AppSettings["adsScriptTag"], aga.AdGroup, "true");
             }
         }
         private void RenderLinkSection(JetNettApi.Models.Page page)
         {
             var id = page.Id;
            
-            if (!string.IsNullOrEmpty(page.CanonicalUrl))
-            {
-                litCanonicalLink.Text = "<link rel=\"canonical\" href=\"" + HttpUtility.HtmlEncode(page.CanonicalUrl) + "\"/>";
-            }
-            if (!string.IsNullOrEmpty(page.FooterHtml))
-            {
-                litFooterHtml.Text = "<br/>" + HttpUtility.HtmlEncode(page.FooterHtml) + "<br/><br/>";
-            }
-            if (!string.IsNullOrEmpty(page.HeaderHtml))
-            {
-                litExtraHtml.Text = HttpUtility.HtmlEncode(page.HeaderHtml) + "<br/><br/>";
-            }
+            PopulateCanonicalUrl(page);
+            RenderFooter(page);
+            RenderHeader(page);
 
            
-                if (string.IsNullOrEmpty(page.MetaKeys))
-                    page.MetaKeys = page.Title;
-                if (string.IsNullOrEmpty(page.MetaDesc))
-                    page.MetaDesc = page.Title;
-                litMeta.Text = "<meta name=\"keywords\" content=\"" + page.MetaKeys + "\"/><meta name=\"description\" content=\"" + page.MetaDesc + "\"/>";
-         
+            RenderMetaSection(page);
 
-            if (string.IsNullOrEmpty(page.Title))
-            {
-                page.Title = "";
-                litPageHeader.Text = "Page Title not found - PageID = " + page.Id;
-            }
-            else
-            {
-                litPageHeader.Text = HttpUtility.HtmlEncode(page.Title);
-            }
+
+            PageTitle(page);
 
             //TODO: Get rid of this shit
-            string startTitle =
-                BasePage.WebService.GetClient(ConfigurationManager.AppSettings["webServiceKey"], DailyEZObject.Client_ID).
-                    Website;
+            var startTitle = JetNettClient;
             Page.Title = page.Title + " - " + startTitle;
 
-            
-            com.dailyez.Link[] links = BasePage.WebService.GetLinksFromPage(ConfigurationManager.AppSettings["webServiceKey"], id);
+            var links = Uow.Links.GetAllByPage(page).ToList();
 
 
             if (page.AutoOrdering)
-                Utility.BubbleSortList(links);
+                Utility.BubbleSortListOfLinks(links);
 
             string htm = "\n\t\t<!-- renderLinkSection() generated -->";
 
-
-            if (links.Length <= 20)
+            
+            if (links.Count() <= 20)
             {
                 htm += "\n\t\t<div class='span8'>";
-                foreach (com.dailyez.Link link in links)
+                foreach (Link link in links)
                 {
                     var target = "";
                     if (!string.IsNullOrEmpty(link.Target))
@@ -160,16 +140,16 @@ namespace DailyEZ.Web
 
                     if (link.IsLink)
                     {
-                        if (link.URL.Contains("PhotoAlbum.aspx") || link.URL.Contains("VideoFireworks.aspx") || link.URL.ToLower().Contains(".dailyez"))
-                            htm += "\n\t\t\t<a style=\"" + style + "\" " + target + " href='" + HttpUtility.HtmlEncode(link.URL) + "'>" + HttpUtility.HtmlEncode(link.Title) + "</a>" + extra + "<br/>";
-                        else if (link.URL.ToLower().Contains("http://") || link.URL.ToLower().Contains("https://"))
+                        if (link.Url.Contains("PhotoAlbum.aspx") || link.Url.Contains("VideoFireworks.aspx") || link.Url.ToLower().Contains(".dailyez"))
+                            htm += "\n\t\t\t<a style=\"" + style + "\" " + target + " href='" + HttpUtility.HtmlEncode(link.Url) + "'>" + HttpUtility.HtmlEncode(link.Title) + "</a>" + extra + "<br/>";
+                        else if (link.Url.ToLower().Contains("http://") || link.Url.ToLower().Contains("https://"))
                         {
                             if (string.IsNullOrEmpty(target))
                                 target = "target=\"_blank\"";
-                            htm += "\n\t\t\t<a style=\"" + style + "\" " + target + " rel=\"nofollow\" href=\"" + HttpUtility.HtmlEncode(link.URL) + "\">" + HttpUtility.HtmlEncode(link.Title) + "</a>" + extra + "<br/>";
+                            htm += "\n\t\t\t<a style=\"" + style + "\" " + target + " rel=\"nofollow\" href=\"" + HttpUtility.HtmlEncode(link.Url) + "\">" + HttpUtility.HtmlEncode(link.Title) + "</a>" + extra + "<br/>";
                         }
                         else
-                            htm += "\n\t\t\t<a style=\"" + style + "\" " + target + " href=\"" + link.URL + "-" + HttpUtility.UrlEncode(link.Title.Replace(" ", "-")) + "\">" + link.Title + "</a>" + extra + "<br/>";
+                            htm += "\n\t\t\t<a style=\"" + style + "\" " + target + " href=\"" + link.Url + "-" + HttpUtility.UrlEncode(link.Title.Replace(" ", "-")) + "\">" + link.Title + "</a>" + extra + "<br/>";
 
                     }
                     else
@@ -188,13 +168,13 @@ namespace DailyEZ.Web
             }
             else
             {
-                int colLength = links.Length / 2;
+                var colLength = links.Count / 2;
 
-                if (((links.Length) % 2) == 1)
+                if (((links.Count) % 2) == 1)
                     colLength++;
                 int counter = 0;
                 htm += "\n\t\t<div class='span4'>";
-                foreach (com.dailyez.Link link in links)
+                foreach (var link in links)
                 {
                     var target = "";
                     if (!string.IsNullOrEmpty(link.Target))
@@ -218,17 +198,17 @@ namespace DailyEZ.Web
 
                     if (link.IsLink)
                     {
-                        if (link.URL.Contains("PhotoAlbum.aspx") || link.URL.Contains("VideoFireworks.aspx") || link.URL.ToLower().Contains(".dailyez"))
-                            htm += "\n\t\t\t<a style=\"" + style + "\" " + target + " href='" + HttpUtility.HtmlEncode(link.URL) + "'>" + HttpUtility.HtmlEncode(link.Title) + "</a>" + extra + "<br/>";
-                        else if (link.URL.ToLower().Contains("http://") || link.URL.ToLower().Contains("https://"))
+                        if (link.Url.Contains("PhotoAlbum.aspx") || link.Url.Contains("VideoFireworks.aspx") || link.Url.ToLower().Contains(".dailyez"))
+                            htm += "\n\t\t\t<a style=\"" + style + "\" " + target + " href='" + HttpUtility.HtmlEncode(link.Url) + "'>" + HttpUtility.HtmlEncode(link.Title) + "</a>" + extra + "<br/>";
+                        else if (link.Url.ToLower().Contains("http://") || link.Url.ToLower().Contains("https://"))
                         {
                             if (string.IsNullOrEmpty(target))
                                 target = "target=\"_blank\"";
 
-                            htm += "\n\t\t\t<a style=\"" + style + "\" rel=\"nofollow\" " + target + " href=\"" + HttpUtility.HtmlEncode(link.URL) + "\">" + HttpUtility.HtmlEncode(link.Title) + "</a>" + extra + "<br/>";
+                            htm += "\n\t\t\t<a style=\"" + style + "\" rel=\"nofollow\" " + target + " href=\"" + HttpUtility.HtmlEncode(link.Url) + "\">" + HttpUtility.HtmlEncode(link.Title) + "</a>" + extra + "<br/>";
                         }
                         else
-                            htm += "\n\t\t\t<a style=\"" + style + "\" " + target + " href=\"" + link.URL + "-" + 
+                            htm += "\n\t\t\t<a style=\"" + style + "\" " + target + " href=\"" + link.Url + "-" + 
                                 HttpUtility.UrlEncode(
                                     link.Title.Replace(" ", "-")
                                     .Replace("0", "")
@@ -250,8 +230,8 @@ namespace DailyEZ.Web
                     else
                     {
                         string title = "";
-                        if (link.URL.Contains("PhotoAlbum.aspx"))
-                            htm += "\n\t\t\t<a style=\"" + style + "\" href='" + HttpUtility.HtmlEncode(link.URL) + "'>" + HttpUtility.HtmlEncode(link.Title) + "</a>" + extra + "<br/>";
+                        if (link.Url.Contains("PhotoAlbum.aspx"))
+                            htm += "\n\t\t\t<a style=\"" + style + "\" href='" + HttpUtility.HtmlEncode(link.Url) + "'>" + HttpUtility.HtmlEncode(link.Title) + "</a>" + extra + "<br/>";
                         else if (link.Title.Contains("class=\"suspendedLink\">"))
                             title = link.Title;
                         else
@@ -272,6 +252,53 @@ namespace DailyEZ.Web
 
             htm += "\n\t\t<!-- end -->";
             litLinkContent.Text = htm;
+        }
+
+        private void PageTitle(Page page)
+        {
+            if (string.IsNullOrEmpty(page.Title))
+            {
+                page.Title = "";
+                litPageHeader.Text = "Page Title not found - PageID = " + page.Id;
+            }
+            else
+            {
+                litPageHeader.Text = HttpUtility.HtmlEncode(page.Title);
+            }
+        }
+
+        private void RenderMetaSection(Page page)
+        {
+            if (string.IsNullOrEmpty(page.MetaKeys))
+                page.MetaKeys = page.Title;
+            if (string.IsNullOrEmpty(page.MetaDesc))
+                page.MetaDesc = page.Title;
+            litMeta.Text = "<meta name=\"keywords\" content=\"" + page.MetaKeys + "\"/><meta name=\"description\" content=\"" +
+                           page.MetaDesc + "\"/>";
+        }
+
+        private void RenderHeader(Page page)
+        {
+            if (!string.IsNullOrEmpty(page.HeaderHtml))
+            {
+                litExtraHtml.Text = "<header>" + HttpUtility.HtmlEncode(page.HeaderHtml) + "</header>";
+            }
+        }
+
+        private void RenderFooter(Page page)
+        {
+            if (!string.IsNullOrEmpty(page.FooterHtml))
+            {
+                litFooterHtml.Text = "<footer>" + HttpUtility.HtmlEncode(page.FooterHtml) + "</footer>";
+            }
+        }
+
+        private void PopulateCanonicalUrl(Page page)
+        {
+            if (!string.IsNullOrEmpty(page.CanonicalUrl))
+            {
+                litCanonicalLink.Text = "<link rel=\"canonical\" href=\"" + HttpUtility.HtmlEncode(page.CanonicalUrl) + "\"/>";
+            }
         }
     }
 }

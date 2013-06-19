@@ -10,6 +10,9 @@ namespace JetNettApi.Data.Tests.Repository_Tests
         {
             CommitCalled = false;
         }
+
+        public void Dispose()
+        {}
         public void Commit()
         {
             CommitCalled = true;
@@ -40,5 +43,7 @@ namespace JetNettApi.Data.Tests.Repository_Tests
         }
 
         public IRepository<Client> Clients { get; private set; }
+        public ILinksRepository Links { get; private set; }
+        public IRepository<DailyEZ> DailyEZs { get; private set; }
     }
 }

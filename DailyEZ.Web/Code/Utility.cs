@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Net;
 using System.Net.Configuration;
 using System.Net.Mail;
@@ -192,6 +193,22 @@ namespace DailyEZ.Web.Code
                 }
             } while (swapped);
         }
+        public static void BubbleSortListOfLinks(List<JetNettApi.Models.Link> links)
+        {
+            bool swapped = false;
+            do
+            {
+                swapped = false;
+                for (int i = 0; i < links.Count - 1; i++)
+                {
+                    if (System.String.Compare(links[i].Title, links[i + 1].Title, System.StringComparison.Ordinal) > 0)
+                    {
+                        SwapLinkObject(links, i, i + 1);
+                        swapped = true;
+                    }
+                }
+            } while (swapped);
+        }
 
       
 
@@ -224,6 +241,12 @@ namespace DailyEZ.Web.Code
         public static void SwapLink(com.dailyez.Link[] links, int x, int y)
         {
             com.dailyez.Link temp = links[x];
+            links[x] = links[y];
+            links[y] = temp;
+        }
+        public static void SwapLinkObject(List<JetNettApi.Models.Link> links, int x, int y)
+        {
+            var temp = links[x];
             links[x] = links[y];
             links[y] = temp;
         }
