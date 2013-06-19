@@ -138,7 +138,7 @@ namespace DailyEZ.Web
                 if (link.IsLink)
                 {
                     linkHtml = string.Format(@"<a style='{0}' rel='{5}' target='{1}' href='{2}'>{3}</a>{4}<br/>",
-                                             GetLinkStyle(link),
+                                             LinkRenderer.GetLinkStyle(link),
                                              GetLinkTarget(link),
                                              GetLinkHref(link),
                                              GetLinkTitle(link),
@@ -149,7 +149,7 @@ namespace DailyEZ.Web
                 {
                     linkHtml = string.Format(
                         @"<span class=""header""><h2 style=""{0} font-size:16px; margin:0"">{1}{2}</h2></span>",
-                        GetLinkStyle(link),
+                        LinkRenderer.GetLinkStyle(link),
                         GetLinkTitle(link),
                         LinkRenderer.GetLinkExtra(link)
                         );
@@ -223,21 +223,7 @@ namespace DailyEZ.Web
             return "_self";
         }
 
-        private string GetLinkStyle(Link link)
-        {
-            var style = "";
-
-            //check for tags in the link title
-            //[content] or [bold]
-            //then add the appropriate styles
-            if (link.Title.ToLower().Contains("[content]"))
-                style += "font-weight:normal;";
-            if (link.Title.ToLower().Contains("[bold]") || link.Title.ToLower().Contains("*bold*"))
-                style += "font-weight:bold;";
-
-            return style;
-
-        }
+   
 
         private void PageTitle(Page page)
         {

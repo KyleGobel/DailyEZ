@@ -21,6 +21,11 @@ namespace DailyEZ.Web.UnitTests.LinkRenderer_Tests
         }
 
         [Test]
+        public void expect_two_breaks_in_return_value_when_passing_two_break_flags_with_title()
+        {      
+            Assert.AreEqual("<br/><br/>", LinkRenderer.GetLinkExtra(new Link() {Title = "This is a [break] Title with two [break]s"}));
+        }
+        [Test]
         public void expect_empty_string_when_passing_in_null_link()
         {
             Assert.AreEqual("", LinkRenderer.GetLinkExtra(null));
