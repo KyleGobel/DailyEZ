@@ -68,5 +68,75 @@ namespace DailyEZ.Web.Code
                     }, link.Title);
             return HttpUtility.HtmlEncode(cleanTitle);
         }
+
+        /// <summary>
+        /// Returns the rel value of an a tag based off the link url and if it should include it or not
+        /// </summary>
+        /// <param name="link">The link that needs a rel tag</param>
+        /// <returns>the value of the rel attribute for an anchor tag</returns>
+        public static string GetLinkRel(Link link)
+        {
+            if (link == null || link.Url == null)
+                return "follow";
+            return (link.Url.ToLower().Contains("http://") || link.Url.ToLower().Contains("https://"))
+                       ? "nofollow"
+                       : "follow";
+        }
+
+        /// <summary>
+        /// Returns the target value for an anchor table based on the link sent
+        /// </summary>
+        /// <param name="link">The link which needs a target tag value</param>
+        /// <returns>A target for an anchor tag</returns>
+        public static string GetLinkTarget(Link link)
+        {
+            if (link == null)
+                return "_self";
+            //if link.Target exists, return that
+            if (!string.IsNullOrEmpty(link.Target))
+                return link.Target;
+
+            //if this is an external link (given by the presences of http:// or https://, and the title hasn't been set yet
+            //open this link in a new window
+            if (link.Url.ToLower().Contains("http://") || link.Url.ToLower().Contains("https://"))
+            {
+                return "_blank";
+            }
+
+            //if nothing else, return in this page
+            return "_self";
+        }
+
+        /// <summary>
+        /// Gets the Href property of an anchor tag from a link, ready for rendering
+        /// </summary>
+        /// <param name="link">Link object to extract the href from</param>
+        /// <returns>A Cleaned and encoded href value for an anchor tag</returns>
+        public static string GetLinkHref(Link link)
+        {
+            if (link == null || link.Url == null)
+                return "#";
+
+            if (link.Url.Contains("http://") || link.Url.Contains("https://"))
+                return HttpUtility.HtmlEncode(link.Url);
+
+            return HttpUtility.HtmlEncode(link.Url)
+                   + "-"
+                   + HttpUtility.HtmlEncode(LinkRenderer.GetLinkTitle(link)
+                                                .Replace(" ", "-")
+                                                .Replace("0", "")
+                                                .Replace("1", "")
+                                                .Replace("2", "")
+                                                .Replace("3", "")
+                                                .Replace("4", "")
+                                                .Replace("5", "")
+                                                .Replace("6", "")
+                                                .Replace("7", "")
+                                                .Replace("8", "")
+                                                .Replace("9", "")
+                                                .Replace("+", "")
+                                                .Replace("&amp;", "")
+                         );
+        }
     }
 }

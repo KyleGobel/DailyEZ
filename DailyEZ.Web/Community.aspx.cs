@@ -131,7 +131,7 @@ namespace DailyEZ.Web
         private string GetLinksHtml(List<Link> links, int start, int finish)
         {
             var htm = "";
-            for(var i =start; i<= finish; i++)
+            for(var i=start; i<finish; i++)
             {
                 var link = links[i];
                 var linkHtml = "";
@@ -139,11 +139,11 @@ namespace DailyEZ.Web
                 {
                     linkHtml = string.Format(@"<a style='{0}' rel='{5}' target='{1}' href='{2}'>{3}</a>{4}<br/>",
                                              LinkRenderer.GetLinkStyle(link),
-                                             GetLinkTarget(link),
-                                             GetLinkHref(link),
+                                             LinkRenderer.GetLinkTarget(link),
+                                             LinkRenderer.GetLinkHref(link),
                                              LinkRenderer.GetLinkTitle(link),
                                              LinkRenderer.GetLinkExtra(link),
-                                             GetLinkRel(link));
+                                             LinkRenderer.GetLinkRel(link));
                 }
                 else
                 {
@@ -159,57 +159,15 @@ namespace DailyEZ.Web
             return htm;
         }
 
-        private string GetLinkRel(Link link)
-        {
-            return (link.Url.ToLower().Contains("http://") || link.Url.ToLower().Contains("https://"))
-                       ? "nofollow"
-                       : "follow";
-        }
+     
 
       
 
         
 
-        private string GetLinkHref(Link link)
-        {
-            if (link.Url.Contains("http://") || link.Url.Contains("https://"))
-                return HttpUtility.HtmlEncode(link.Url);
+        
 
-            return HttpUtility.HtmlEncode(link.Url) 
-                   + "-"
-                   + HttpUtility.HtmlEncode(LinkRenderer.GetLinkTitle(link)
-                                                .Replace(" ", "-")
-                                                .Replace("0", "")
-                                                .Replace("1", "")
-                                                .Replace("2", "")
-                                                .Replace("3", "")
-                                                .Replace("4", "")
-                                                .Replace("5", "")
-                                                .Replace("6", "")
-                                                .Replace("7", "")
-                                                .Replace("8", "")
-                                                .Replace("9", "")
-                                                .Replace("+", "")
-                                                .Replace("&", "")
-                         );
-        }
-
-        private string GetLinkTarget(Link link)
-        {
-            //if link.Target exists, return that
-            if (!string.IsNullOrEmpty(link.Target))
-                return link.Target;
-
-            //if this is an external link (given by the presences of http:// or https://, and the title hasn't been set yet
-            //open this link in a new window
-            if (link.Url.ToLower().Contains("http://") || link.Url.ToLower().Contains("https://"))
-            {
-                return "_blank";
-            }
-
-            //if nothing else, return in this page
-            return "_self";
-        }
+        
 
    
 
