@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DailyEZ.Web.Code;
 using NUnit.Framework;
 
-namespace DailyEZ.Web.UnitTests.LinkRenderer_Tests
+namespace DailyEZ.Web.UnitTests.FlagMappingsHelpers_Tests
 {
     public class ExtractFlagsFromStringTests
     {
@@ -15,7 +15,7 @@ namespace DailyEZ.Web.UnitTests.LinkRenderer_Tests
                                    {"[testKey]", "testValue"}
                                };
 
-            Assert.AreEqual("", LinkRenderer.ExtractFlagsFromString(mappings, "this has a [flag] that doesn't exist in the mapping dictionary"));
+            Assert.AreEqual("", FlagMappingsHelpers.ExtractFlagsFromString(mappings, "this has a [flag] that doesn't exist in the mapping dictionary"));
             
         }
         [Test]
@@ -26,7 +26,7 @@ namespace DailyEZ.Web.UnitTests.LinkRenderer_Tests
                                    {"[testKey]", "testValue"}
                                };
 
-            Assert.AreEqual("testValue", LinkRenderer.ExtractFlagsFromString(mappings, "this [has] lots [of] [flags] [testKey]"));
+            Assert.AreEqual("testValue", FlagMappingsHelpers.ExtractFlagsFromString(mappings, "this [has] lots [of] [flags] [testKey]"));
         }
         [Test]
         public void when_more_than_one_of_same_flag_passed_return_multiple_values()
@@ -36,7 +36,7 @@ namespace DailyEZ.Web.UnitTests.LinkRenderer_Tests
                                    {"[testKey]", "testValue"}
                                };
 
-            Assert.AreEqual("testValuetestValue", LinkRenderer.ExtractFlagsFromString(mappings, "t[testKey] and another [testKey]"));
+            Assert.AreEqual("testValuetestValue", FlagMappingsHelpers.ExtractFlagsFromString(mappings, "t[testKey] and another [testKey]"));
         }
         [Test]
         public void when_multiple_different_flags_passed_return_multiple_different_values()
@@ -47,7 +47,7 @@ namespace DailyEZ.Web.UnitTests.LinkRenderer_Tests
                                    {"[differentKey]", "differentValue"}
                                };
 
-            var result = LinkRenderer.ExtractFlagsFromString(mappings, "mulitple [testKey] and [differentKey]");
+            var result = FlagMappingsHelpers.ExtractFlagsFromString(mappings, "mulitple [testKey] and [differentKey]");
 
             Assert.IsTrue(result.Contains("testValue") && result.Contains("differentValue"));
             

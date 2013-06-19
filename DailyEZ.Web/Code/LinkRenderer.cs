@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Web;
 using JetNettApi.Models;
 
 namespace DailyEZ.Web.Code
@@ -19,26 +20,7 @@ namespace DailyEZ.Web.Code
                                                                        {"[bold]", "font-weight:bold;"}
                                                                    };
 
-        public static string ExtractFlagsFromString(Dictionary<string, string> mappings, string input )
-        {
-            //Regex to find flags ( [word] )
-            var re = new Regex(@"\[(\w+)\]", RegexOptions.Compiled);
-
-            //find all matches
-            var matches = re.Matches(input);
-
-            var output = "";
-            //loop through mathes and return their outputs in one string
-            foreach (Match m in matches)
-            {
-                string valueFromDictionary;
-                mappings.TryGetValue(m.Value, out valueFromDictionary);
-                if (valueFromDictionary == null)
-                    valueFromDictionary = "";
-                output += m.Result(valueFromDictionary);
-            }
-            return output;
-        }
+    
         /// <summary>
         /// Parses link properties for any flags, and returns approprite extra html
         /// </summary>
@@ -50,16 +32,35 @@ namespace DailyEZ.Web.Code
             if (link == null || link.Title == null)
                 return "";
 
-            return ExtractFlagsFromString(ExtraFlagMappings, link.Title);
+            return FlagMappingsHelpers.ExtractFlagsFromString(ExtraFlagMappings, link.Title);
         }
 
+        /// <summary>
+        /// Parses link properites for any style flags, and returns appropriate css values
+        /// </summary>
+        /// <param name="link">The link object to parse for flags</param>
+        /// <returns>The CSS that is needed to render this link appropriatly</returns>
         public static string GetLinkStyle(Link link)
         {
             if (link == null || link.Title == null)
                 return "";
 
-            return ExtractFlagsFromString(StyleFlagMappings, link.Title);
+            return FlagMappingsHelpers.ExtractFlagsFromString(StyleFlagMappings, link.Title);
 
+        }
+
+        public static string GetLinkTitle(Link link)
+        {
+            //clean out our annotations or attributes
+            return HttpUtility.HtmlEncode(link.Title
+                    .Replace("*BOLD*", "")
+                    .Replace("[CONTENT]", "")
+                    .Replace("[BOLD]", "")
+                    .Replace("*bold*", "")
+                    .Replace("[content]", "")
+                    .Replace("[bold]", "")
+                    .Replace("[BREAK]", "")
+                    .Replace("[break]", ""));
         }
     }
 }

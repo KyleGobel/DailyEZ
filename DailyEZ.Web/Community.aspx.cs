@@ -141,7 +141,7 @@ namespace DailyEZ.Web
                                              LinkRenderer.GetLinkStyle(link),
                                              GetLinkTarget(link),
                                              GetLinkHref(link),
-                                             GetLinkTitle(link),
+                                             LinkRenderer.GetLinkTitle(link),
                                              LinkRenderer.GetLinkExtra(link),
                                              GetLinkRel(link));
                 }
@@ -150,7 +150,7 @@ namespace DailyEZ.Web
                     linkHtml = string.Format(
                         @"<span class=""header""><h2 style=""{0} font-size:16px; margin:0"">{1}{2}</h2></span>",
                         LinkRenderer.GetLinkStyle(link),
-                        GetLinkTitle(link),
+                        LinkRenderer.GetLinkTitle(link),
                         LinkRenderer.GetLinkExtra(link)
                         );
                 }
@@ -168,19 +168,7 @@ namespace DailyEZ.Web
 
       
 
-        private string GetLinkTitle(Link link)
-        {
-            //clean out our annotations or attributes
-            return HttpUtility.HtmlEncode(link.Title
-                    .Replace("*BOLD*", "")
-                    .Replace("[CONTENT]", "")
-                    .Replace("[BOLD]", "")
-                    .Replace("*bold*", "")
-                    .Replace("[content]", "")
-                    .Replace("[bold]", "")
-                    .Replace("[BREAK]", "")
-                    .Replace("[break]", ""));
-        }
+        
 
         private string GetLinkHref(Link link)
         {
@@ -188,8 +176,8 @@ namespace DailyEZ.Web
                 return HttpUtility.HtmlEncode(link.Url);
 
             return HttpUtility.HtmlEncode(link.Url) 
-                   + "-" 
-                   + HttpUtility.HtmlEncode(GetLinkTitle(link)
+                   + "-"
+                   + HttpUtility.HtmlEncode(LinkRenderer.GetLinkTitle(link)
                                                 .Replace(" ", "-")
                                                 .Replace("0", "")
                                                 .Replace("1", "")
