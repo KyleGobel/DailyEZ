@@ -151,6 +151,10 @@ namespace DailyEZ.Web.Code
             return mailSection != null ? mailSection.Smtp : null;
 
         }
+        /// <summary>
+        /// Sends an email using the <seealso cref="GetSmtpSettings"/>
+        /// </summary>
+        /// <param name="message">The mail message to send</param>
         public static void SendEmail(MailMessage message)
         {
             var settings = GetSmtpSettings();
