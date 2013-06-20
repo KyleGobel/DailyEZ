@@ -59,7 +59,33 @@ namespace DailyEZ.Web.Code
             return htm;
         }
 
+        public static string RenderLinks(List<Link> links)
+        {
+            var htm = "\n\t\t<!-- RenderLinks() generated -->";
 
+
+            if (links.Count() <= 20)
+            {
+                htm += "\n\t\t<div class='span8'>";
+                htm += LinkRenderer.GetLinksHtml(links, 0, links.Count);
+                htm += "\n\t\t</div>";
+            }
+            else
+            {
+                var colLength = links.Count / 2;
+
+                if (((links.Count) % 2) == 1)
+                    colLength++;
+                htm += "\n\t\t<div class='span4'>";
+                htm += LinkRenderer.GetLinksHtml(links, 0, colLength);
+                htm += "\n\t\t</div>\n\t\t<div class='span4'>";
+                htm += LinkRenderer.GetLinksHtml(links, colLength, links.Count);
+                htm += "\n\t\t</div>";
+            }
+
+            htm += "\n\t\t<!-- end -->";
+            return htm;
+        }
         /// <summary>
         /// Parses link properties for any flags, and returns approprite extra html
         /// </summary>

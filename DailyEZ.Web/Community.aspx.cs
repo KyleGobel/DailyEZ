@@ -4,10 +4,12 @@ using System.Configuration;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 using DailyEZ.Web.Code;
-using JetNettApi.Models;
 using System.Linq;
 using System.Linq.Expressions;
+using Page = JetNettApi.Models.Page;
 
 namespace DailyEZ.Web
 {
@@ -89,69 +91,34 @@ namespace DailyEZ.Web
             RenderFooter(page);
             RenderHeader(page);
             RenderMetaSection(page);
-            PageTitle(page);
+            PageHeader(page, litPageHeader);
 
-            //TODO: Get rid of this shit
-            var startTitle = JetNettClient;
-            Page.Title = page.Title + " - " + startTitle;
+            Page.Title = string.Format("{0} - {1}", page.Title, JetNettClient.WebsiteTitle);
 
+
+            //get links
             var links = Uow.Links.GetAllByPage(page).ToList();
-
-
+            
+            //sort links
             if (page.AutoOrdering)
                 Utility.BubbleSortListOfLinks(links);
-
-            string htm = "\n\t\t<!-- renderLinkSection() generated -->";
-
             
-            if (links.Count() <= 20)
-            {
-                htm += "\n\t\t<div class='span8'>";
-                htm += LinkRenderer.GetLinksHtml(links, 0, links.Count);
-
-                htm += "\n\t\t</div>";
-            }
-            else
-            {
-                var colLength = links.Count / 2;
-
-                if (((links.Count) % 2) == 1)
-                    colLength++;
-                htm += "\n\t\t<div class='span4'>";
-                htm += LinkRenderer.GetLinksHtml(links, 0, colLength);
-                htm += "\n\t\t</div>\n\t\t<div class='span4'>";
-                htm += LinkRenderer.GetLinksHtml(links, colLength, links.Count);
-                htm += "\n\t\t</div>";
-            }
-
-            htm += "\n\t\t<!-- end -->";
-            litLinkContent.Text = htm;
+            //render links
+            litLinkContent.Text = LinkRenderer.RenderLinks(links);
         }
 
        
 
-     
-
-      
-
-        
-
-        
-
-        
-
-   
-
-        private void PageTitle(Page page)
+        private void PageHeader(Page page, ITextControl pageHeaderControl)
         {
             if (string.IsNullOrEmpty(page.Title))
             {
                 page.Title = "";
-                litPageHeader.Text = "Page Title not found - PageID = " + page.Id;
+                pageHeaderControl.Text = "Page Title not found - PageID = " + page.Id;
             }
             else
             {
-                litPageHeader.Text = HttpUtility.HtmlEncode(page.Title);
+                pageHeaderControl.Text = HttpUtility.HtmlEncode(page.Title);
             }
         }
 
