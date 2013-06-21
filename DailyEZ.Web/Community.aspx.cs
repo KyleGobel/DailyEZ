@@ -87,11 +87,11 @@ namespace DailyEZ.Web
         {
             var id = page.Id;
            
-            PopulateCanonicalUrl(page);
-            RenderFooter(page);
-            RenderHeader(page);
-            RenderMetaSection(page);
-            PageHeader(page, litPageHeader);
+            PageRenderer.RenderCanonicalUrlToControl(page, litCanonicalLink);
+            PageRenderer.RenderFooterHtmlToControl(page, litFooterHtml);
+            PageRenderer.RenderHtmlHeaderToControl(page, litExtraHtml);
+            PageRenderer.RenderMetaSectionToControl(page, litMeta);
+            PageRenderer.RenderPageHeaderToControl(page, litPageHeader);
 
             Page.Title = string.Format("{0} - {1}", page.Title, JetNettClient.WebsiteTitle);
 
@@ -109,51 +109,5 @@ namespace DailyEZ.Web
 
        
 
-        private void PageHeader(Page page, ITextControl pageHeaderControl)
-        {
-            if (string.IsNullOrEmpty(page.Title))
-            {
-                page.Title = "";
-                pageHeaderControl.Text = "Page Title not found - PageID = " + page.Id;
-            }
-            else
-            {
-                pageHeaderControl.Text = HttpUtility.HtmlEncode(page.Title);
-            }
-        }
-
-        private void RenderMetaSection(Page page)
-        {
-            if (string.IsNullOrEmpty(page.MetaKeys))
-                page.MetaKeys = page.Title;
-            if (string.IsNullOrEmpty(page.MetaDesc))
-                page.MetaDesc = page.Title;
-            litMeta.Text = "<meta name=\"keywords\" content=\"" + page.MetaKeys + "\"/><meta name=\"description\" content=\"" +
-                           page.MetaDesc + "\"/>";
-        }
-
-        private void RenderHeader(Page page)
-        {
-            if (!string.IsNullOrEmpty(page.HeaderHtml))
-            {
-                litExtraHtml.Text = "<header>" + HttpUtility.HtmlEncode(page.HeaderHtml) + "</header>";
-            }
-        }
-
-        private void RenderFooter(Page page)
-        {
-            if (!string.IsNullOrEmpty(page.FooterHtml))
-            {
-                litFooterHtml.Text = "<footer>" + HttpUtility.HtmlEncode(page.FooterHtml) + "</footer>";
-            }
-        }
-
-        private void PopulateCanonicalUrl(Page page)
-        {
-            if (!string.IsNullOrEmpty(page.CanonicalUrl))
-            {
-                litCanonicalLink.Text = "<link rel=\"canonical\" href=\"" + HttpUtility.HtmlEncode(page.CanonicalUrl) + "\"/>";
-            }
-        }
     }
 }
