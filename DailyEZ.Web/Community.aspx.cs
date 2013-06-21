@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Net.Mail;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using DailyEZ.Web.Code;
 using System.Linq;
-using System.Linq.Expressions;
 using Page = JetNettApi.Models.Page;
 
 namespace DailyEZ.Web
@@ -23,14 +17,35 @@ namespace DailyEZ.Web
 
             if (page == null)
                 return;
+            
+
+            //Render all elements to the appropriate text controls on the page
+            RenderPageElements(page);
+
+            //Handle all link rendering
             RenderLinkSection(page);
+
+            //Take care of ads and rendering
             RenderAds(page);
 
+
+            //If the user is recommending a website it will post back
             if (!Page.IsPostBack)
             {
                 _senderUrl = Request.ServerVariables["SERVER_NAME"] + "" + Request.ServerVariables["URL"];
                 Utility.SaveCookie(Response, Request, "referPage", _senderUrl);
             }
+        }
+
+        private void RenderPageElements(Page page)
+        {
+            PageRenderer.RenderCanonicalUrlToControl(page, litCanonicalLink);
+            PageRenderer.RenderFooterHtmlToControl(page, litFooterHtml);
+            PageRenderer.RenderHtmlHeaderToControl(page, litExtraHtml);
+            PageRenderer.RenderMetaSectionToControl(page, litMeta);
+            PageRenderer.RenderPageHeaderToControl(page, litPageHeader);
+
+            Page.Title = string.Format("{0} - {1}", page.Title, JetNettClient.WebsiteTitle);
         }
 
         private JetNettApi.Models.Page GetPageFromRoute()
@@ -85,17 +100,6 @@ namespace DailyEZ.Web
         }
         private void RenderLinkSection(JetNettApi.Models.Page page)
         {
-            var id = page.Id;
-           
-            PageRenderer.RenderCanonicalUrlToControl(page, litCanonicalLink);
-            PageRenderer.RenderFooterHtmlToControl(page, litFooterHtml);
-            PageRenderer.RenderHtmlHeaderToControl(page, litExtraHtml);
-            PageRenderer.RenderMetaSectionToControl(page, litMeta);
-            PageRenderer.RenderPageHeaderToControl(page, litPageHeader);
-
-            Page.Title = string.Format("{0} - {1}", page.Title, JetNettClient.WebsiteTitle);
-
-
             //get links
             var links = Uow.Links.GetAllByPage(page).ToList();
             

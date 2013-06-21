@@ -6,6 +6,11 @@ namespace DailyEZ.Web.Code
 {
     public class PageRenderer
     {
+        /// <summary>
+        /// Renders the Title or h1 tag of the page to the specified control
+        /// </summary>
+        /// <param name="page">The Page object in which to get the title from</param>
+        /// <param name="pageHeaderControl">The control to render the html to</param>
         public static void RenderPageHeaderToControl(Page page, ITextControl pageHeaderControl)
         {
             if (string.IsNullOrEmpty(page.Title))
@@ -19,6 +24,11 @@ namespace DailyEZ.Web.Code
             }
         }
 
+        /// <summary>
+        /// Render the MetaKeywords and MetaDescription to the specified text control
+        /// </summary>
+        /// <param name="page">The page object to get the keywords and description from</param>
+        /// <param name="metaControl">The control to render the html to</param>
         public static void RenderMetaSectionToControl(Page page, ITextControl metaControl)
         {
             if (string.IsNullOrEmpty(page.MetaKeys))
@@ -29,6 +39,11 @@ namespace DailyEZ.Web.Code
                            page.MetaDesc + "\"/>";
         }
 
+        /// <summary>
+        /// Renders the header tag and appropriate html to the given text control
+        /// </summary>
+        /// <param name="page">Page to get the content from that is suppose to be rendered</param>
+        /// <param name="headerControl">The control to render the html to</param>
         public static void RenderHtmlHeaderToControl(Page page, ITextControl headerControl)
         {
             if (!string.IsNullOrEmpty(page.HeaderHtml))
@@ -37,6 +52,11 @@ namespace DailyEZ.Web.Code
             }
         }
 
+        /// <summary>
+        /// Renders the footer tag and appropriate html to the given text control
+        /// </summary>
+        /// <param name="page">Page to get the content from that is supposed to be rendered</param>
+        /// <param name="footerControl">The control to render the html to</param>
         public static void RenderFooterHtmlToControl(Page page, ITextControl footerControl)
         {
             if (!string.IsNullOrEmpty(page.FooterHtml))
@@ -45,6 +65,11 @@ namespace DailyEZ.Web.Code
             }
         }
 
+        /// <summary>
+        /// Renders the CanonicalUrl to the passed in text control
+        /// </summary>
+        /// <param name="page">The page object to get the canonicalUrl from</param>
+        /// <param name="canonicalLinkControl">The control to render the html to</param>
         public static void RenderCanonicalUrlToControl(Page page, ITextControl canonicalLinkControl)
         {
             if (!string.IsNullOrEmpty(page.CanonicalUrl))
