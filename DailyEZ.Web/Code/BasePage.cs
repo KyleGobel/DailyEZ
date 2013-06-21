@@ -16,7 +16,7 @@ namespace DailyEZ.Web.Code
         [Inject]
         public JetNettApiUow Uow { get; set; }
 
-        public JetNettApi.Models.Client JetNettClient { get; set; }
+        public static JetNettApi.Models.Client JetNettClient { get; set; }
 
         public BasePage()
         {
