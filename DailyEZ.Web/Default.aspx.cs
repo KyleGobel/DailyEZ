@@ -12,7 +12,7 @@ namespace DailyEZ.Web
         public string LeftStack()
         {
 
-            int currentLeftSideStackID = BasePage.DailyEZObject.Default_Left_Stack;
+            int currentLeftSideStackID = BasePage.DailyEZObject1.DefaultLeftStack;
 
             var overrideID = Utility.GetIntFromCookie(Request, "leftStackOverride");
             if (overrideID > 0)
@@ -27,7 +27,7 @@ namespace DailyEZ.Web
         }
         public string MiddleStack()
         {
-            var currentMiddleStackID = BasePage.DailyEZObject.Default_Middle_Stack;
+            var currentMiddleStackID = BasePage.DailyEZObject1.DefaultMiddleStack;
 
             var overrideID = Utility.GetIntFromCookie(Request, "middleStackOverride");
             if (overrideID > 0)
@@ -42,7 +42,7 @@ namespace DailyEZ.Web
         }
         public string RightStack()
         {
-            int currentRightSideStackID = BasePage.DailyEZObject.Default_Right_Stack;
+            int currentRightSideStackID = BasePage.DailyEZObject1.DefaultRightStack;
             var stack = Uow.Stacks.GetById(currentRightSideStackID);
 
             return stack.RawWidgetsString.Replace("###", "");
