@@ -43,6 +43,7 @@ namespace JetNettApi.Data.Tests.Repository_Tests
         }
 
         public IRepository<Client> Clients { get; private set; }
+        public IRepository<Stack> Stacks { get; private set; }
         public ILinksRepository Links { get; private set; }
         public IRepository<DailyEZ> DailyEZs { get; private set; }
     }

@@ -48,6 +48,7 @@ namespace JetNettApi.Data.IntegrationTests
 
         public IPagesRepository Pages { get { return RepositoryProvider.GetRepository<IPagesRepository>(); } }
         public IRepository<Client> Clients { get { return RepositoryProvider.GetRepositoryForEntityType<Client>();  } }
+        public IRepository<Stack> Stacks { get; private set; }
         public ILinksRepository Links { get { return RepositoryProvider.GetRepository<ILinksRepository>(); } }
         public IAdGroupAssignmentsRepository AdGroupAssignments { get { return RepositoryProvider.GetRepository<IAdGroupAssignmentsRepository>();  }  }
         public IRepository<DailyEZ> DailyEZs { get { return RepositoryProvider.GetRepositoryForEntityType<DailyEZ>(); } }
