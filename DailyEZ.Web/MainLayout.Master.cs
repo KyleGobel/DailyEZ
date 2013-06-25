@@ -66,13 +66,13 @@ namespace DailyEZ.Web
             get
             {
                 if (BasePage.DailyEZObject1 == null)
-                    return string.Format("<img alt='placeholder' src=\"{0}\"/>", "http://placehold.it/220x35");
+                    return string.Format("<img alt='placeholder' src=\"{0}\"/>", "http://placehold.it/250x35");
 
                 if (!Utility.UrlExists(BasePage.DailyEZObject1.TopLeftImageUrl))
                 {
                     var ex = new Exception("Image URL returned 404: " + BasePage.DailyEZObject1.TopLeftImageUrl);
                     ErrorLog.GetDefault(HttpContext.Current).Log(new Error(ex));
-                    return string.Format("<img alt='placeholder' src=\"{0}\"/>", "http://placehold.it/220x35&text=Image Not Found");
+                    return string.Format("<img alt='placeholder' src=\"{0}\"/>", "http://placehold.it/250x35&text=Image Not Found");
 
                 }
                 return string.Format("<a href=\"{2}\" target=\"_blank\"><img alt=\"{0}\" src=\"{1}\"/></a>",
@@ -88,12 +88,12 @@ namespace DailyEZ.Web
             get
             {
                 if (BasePage.DailyEZObject1 == null)
-                    return string.Format("<img alt='placeholder' src=\"{0}\"/>", "http://placehold.it/220x35");
+                    return string.Format("<img alt='placeholder' src=\"{0}\"/>", "http://placehold.it/250x35");
                 if (!Utility.UrlExists(BasePage.DailyEZObject1.TopRightImageUrl))
                 {
                     var ex = new Exception("Image URL returned 404: " + BasePage.DailyEZObject1.TopRightImageUrl);
                     ErrorLog.GetDefault(HttpContext.Current).Log(new Error(ex));
-                    return string.Format("<img alt='placeholder' src=\"{0}\"/>", "http://placehold.it/220x35&text=Image Not Found");
+                    return string.Format("<img alt='placeholder' src=\"{0}\"/>", "http://placehold.it/250x35&text=Image Not Found");
                 }
 
                 return string.Format("<a href=\"{2}\" target=\"_blank\"><img alt=\"{0}\" src=\"{1}\"/></a>",
