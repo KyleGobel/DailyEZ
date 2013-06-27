@@ -26,10 +26,7 @@ namespace DailyEZ.Web
                 AnalyticsKey = BasePage.JetNettClient.AnalyticsKey;
 
 
-            //weird need to change name on database table sometime...very hacky
-            Page.MetaDescription = BasePage.DailyEZObject1.MetaDescription;
-            
-            
+            if (BasePage.DailyEZObject1.SeoText != null) Page.MetaDescription = BasePage.DailyEZObject1.SeoText;
         }
         public string LocalBusinessUrl
         {
