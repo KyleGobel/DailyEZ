@@ -38,12 +38,13 @@
             <%: Scripts.Render("~/bundles/modernizr") %>
                        
             <!--css files-->
-            <%: Styles.Render("~/Content/css") %>
+            <%: Styles.Render("~/Content/css", "~/Content/css/jqueryui" ) %>
             
             <!--js files-->
             <%:
                 Scripts.Render(
                      "~/bundles/jquery",
+                     "~/bundles/jqueryui",
                      "~/bundles/jsextlibs",
                      "~/js/vendor/require.js",
                      "~/bundles/jsapplibs",
