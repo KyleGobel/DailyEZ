@@ -217,6 +217,9 @@ textarea {
             text-align:right;
         }
 
+          #registration-dialog {
+              display:none;
+          }
 
 
 

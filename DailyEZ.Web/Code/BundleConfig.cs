@@ -18,6 +18,10 @@ namespace DailyEZ.Web.Code
                 "~/js/vendor/bootstrap.js", //bootstrap
                 //jquery plugins
                 "~/js/vendor/jquery.ba-bbq.js",
+                "~/js/vendor/jquery.ui.core.js",
+                "~/js/vendor/jquery.ui.widget.js",
+                "~/js/vendor/jquery.ui.dialog.js",
+                "~/js/vendor/jquery.ui.position.js",
                 //toastr
                 "~/js/vendor/toastr.js"
                 ));
@@ -31,7 +35,8 @@ namespace DailyEZ.Web.Code
 
 
             //css bundles
-            bundles.Add(new StyleBundle("~/Content/css").IncludeDirectory("~/css/", "*.css", searchSubdirectories: false));
+            bundles.Add(new StyleBundle("~/Content/css").IncludeDirectory("~/css/", "*.css", searchSubdirectories: false)
+                .Include("~/css/vendor/jquery.ui.all.css"));
 
 
             //for default aspx

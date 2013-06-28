@@ -77,6 +77,22 @@
         document.cookie = c_name + "=" + escape(value) +
     ((expiredays == null) ? "" : ";expires=" + exdate.toGMTString());
     },
+
+    //setFullCookie
+    //---------------
+    //params:
+    //   --name: name of the cookie to save
+    //   --value: value you want to save into the cookie
+    //   --expiredays: how many days to store the cookie
+    setFullCookie: function (name, value, expires, path, domain, secure) {
+        var curCookie = name + "=" + value +
+          ((expires) ? "; expires=" + expires.toGMTString() : "") +
+          ((path) ? "; path=" + path : "") +
+          ((domain) ? "; domain=" + domain : "") +
+          ((secure) ? "; secure" : "");
+
+        document.cookie = curCookie;
+    },
     
     //getBaseURL
     //-------------
