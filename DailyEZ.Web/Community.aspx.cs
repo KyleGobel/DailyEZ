@@ -101,7 +101,7 @@ namespace DailyEZ.Web
         private void RenderLinkSection(JetNettApi.Models.Page page)
         {
             //get links
-            var links = Uow.Links.GetAllByPage(page).ToList();
+            var links = Uow.Links.GetAllByPage(page).OrderBy(v => v.Position).ToList();
             
             //sort links
             if (page.AutoOrdering)
