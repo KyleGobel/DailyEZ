@@ -1,9 +1,7 @@
 ﻿(function () {
-    
     var testModules = [
-        "ButtonStackSelectorTests"
+        "ButtonStackSelector/ButtonStackSelectorTests"
     ];
- 
     
     require(testModules, function () {
         QUnit.load();

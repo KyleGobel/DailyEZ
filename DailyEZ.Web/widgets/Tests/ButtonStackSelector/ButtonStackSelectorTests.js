@@ -1,4 +1,6 @@
-﻿define('ButtonStackSelectorTests', ['jquery', '../ButtonStackSelector/buttonStackSelector', "jquery.ba-bbq"], function ($, widgetLibrary) {
+﻿
+define(['jquery', '../../ButtonStackSelector/buttonStackSelector', "jquery.ba-bbq"], function ($, widgetLibrary) {
+
     module("Button Stack Selector Tests");
     var widget = new widgetLibrary.Widgets.ButtonStackSelector();
     widget.stacks = "220,221,219,213,214,212,216,217";
