@@ -6,4 +6,4 @@ Widget Docs
 [Button Stack Selector][1]
 
 
-  [1]: Docs/Widgets/ButtonStackSelector.md
+  [1]: /blob/master/Docs/Widgets/ButtonStackSelectorWidget.md
