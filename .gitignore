@@ -24,6 +24,7 @@ obj/
 *.exe
 *.o
 *.so
+*.pubxml
 
 # Packages #
 ############
