@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Web;
 using System.Web.UI;
+using Elmah;
 using JetNettApi.Data;
 using Ninject;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace DailyEZ.Web.Code
 
             int clientID = Utility.GetIntFromCookie(Request, "clientID");
             if (HttpContext.Current.IsDebuggingEnabled) 
-                clientID = 777;
+                clientID = 768;
             if (clientID == 0)
             {
                 //DON'T TOUCH ANYTHING BETWEEN THESE LINES
@@ -42,7 +43,7 @@ namespace DailyEZ.Web.Code
                 //url = url.Remove(url.LastIndexOf("/", StringComparison.Ordinal)).Replace("/DailyEZ", "").Replace("/widgets", "");
                 url = "http://" + uri.Host;
                 //url = "http://mary.dailyez.com";
-                var dailyEZ = Uow.DailyEZs.GetAll().SingleOrDefault(d => d.UserFriendlyUrl.ToLower() == url.ToLower());
+                var dailyEZ = Uow.DailyEZs.GetAll().FirstOrDefault(d => d.UserFriendlyUrl.ToLower() == url.ToLower());
                 if (dailyEZ != null)
                     clientID = dailyEZ.ClientId;
                 //--------------------------------------------------- 
@@ -66,6 +67,11 @@ namespace DailyEZ.Web.Code
                     //    Response.Redirect("~/ErrorPage.aspx?errorMessage=No ClientID found for " +
                     //                      HttpUtility.UrlEncode(url));
                 }
+            }
+            if (clientID == 0)
+            {
+                Elmah.ErrorLog.GetDefault(HttpContext.Current).Log(new Error(new NullReferenceException("BasePage.ClientID still 0 after checks")));
+                return;
             }
             JetNettClient = Uow.Clients.GetById(clientID);
             DailyEZObject1 = Uow.DailyEZs.GetAll().Single(d => d.ClientId == JetNettClient.Id);

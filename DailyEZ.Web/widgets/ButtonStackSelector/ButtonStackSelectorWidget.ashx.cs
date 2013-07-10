@@ -9,13 +9,12 @@ namespace DailyEZ.Web.widgets.ButtonStackSelector
     /// </summary>
     public class ButtonStackSelectorWidget : IHttpHandler
     {
-
         public void ProcessRequest(HttpContext context)
         {
             try
             {
                 context.Response.ContentType = "application/javascript";
-                var stacks = (string)context.Request["stacks"];
+                var stacks = context.Request["stacks"];
                 var title = context.Request["title"];
                 var sWidgetID = context.Request["widgetID"];
                 var buttonColor = context.Request["buttonColor"];

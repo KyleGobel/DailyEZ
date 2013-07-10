@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Web;
+using JetNettApi.Data;
+using JetNettApi.Data.Helpers;
+using Ninject;
 
 namespace DailyEZ.Web.widgets.ButtonStackSelector
 {
@@ -10,11 +13,17 @@ namespace DailyEZ.Web.widgets.ButtonStackSelector
     public class ButtonStackSelectorWorker : IHttpHandler
     {
         string _buttonClass = "";
+
+
+        public JetNettApiUow Uow { get; set; }
+
+       
         public void ProcessRequest(HttpContext context)
         {
+            Uow = new JetNettApiUow(new RepositoryProvider(new RepositoryFactories()));
             context.Response.ContentType = "text/html";
 
-            var stacks = (string)context.Request["stacks"];
+            var stacks = context.Request["stacks"];
             var title = context.Request["title"];
             var sWidgetID = context.Request["widgetID"];
             _buttonClass = context.Request["buttonColor"];
@@ -29,23 +38,22 @@ namespace DailyEZ.Web.widgets.ButtonStackSelector
 
             if (stacks == null)
                 return;
-            string[] iStacks = stacks.Split(new char[] { ',' });
-            var service = new com.dailyez.Service();
+            var iStacks = stacks.Split(new[] { ',' });
 
-            var stacksList = new List<com.dailyez.Stack>();
+            var stacksList = new List<JetNettApi.Models.Stack>();
             foreach (var s in iStacks)
             {
                 var stackID = 0;
                 int.TryParse(s, out stackID);
                 if (stackID > 0)
                 {
-                    stacksList.Add(service.GetStack(stackID));
+                    stacksList.Add(Uow.Stacks.GetById(stackID));
                 }
             }
 
             const string templateFile = "buttonStackSelectorTemplate.html";
             var template = "";
-            using (var fs = new FileStream(System.Web.HttpContext.Current.Server.MapPath(templateFile), FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var fs = new FileStream(HttpContext.Current.Server.MapPath(templateFile), FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 using (var reader = new StreamReader(fs))
                 {
@@ -67,7 +75,7 @@ namespace DailyEZ.Web.widgets.ButtonStackSelector
 
         }
 
-        public void GetStacksHtml(List<com.dailyez.Stack> stacks, out string leftHtml, out string rightHtml)
+        public void GetStacksHtml(List<JetNettApi.Models.Stack> stacks, out string leftHtml, out string rightHtml)
         {
             var html = "";
             leftHtml = "";
@@ -86,7 +94,7 @@ namespace DailyEZ.Web.widgets.ButtonStackSelector
             
             foreach (var stack in stacks)
             {
-                html += string.Format("<button class='btn {3}' stack-id='{0}' stack-height='{2}' style='width:169px;margin-bottom:8px;text-align:left;'>{1}</button><br/>", stack.ID, HttpUtility.HtmlEncode(stack.Display_Name), stack.Height, _buttonClass);
+                html += string.Format("<button class='btn {3}' stack-id='{0}' stack-height='{2}' style='width:169px;margin-bottom:8px;text-align:left;'>{1}</button><br/>", stack.Id, HttpUtility.HtmlEncode(stack.DisplayName), stack.Height, _buttonClass);
                 counter++;
 
                 if (counter == seperator)

@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <!--Define Application Root-->
+        <link rel="home" id="ApplicationRoot" href="../../" />
+        <!--Import StyleSheets-->
+        <link rel="stylesheet" href="../../css/widgets.css" />
+        <link rel="stylesheet" href="../../css/dailyEZBootstrap.css"/>
+        
+        <!--Load up Javascript dependencies-->
+        <script src="../../js/vendor/jquery-1.9.1.min.js"></script>
+        <script src="../../js/vendor/jquery.ba-bbq.js"></script>
+        <script src="../../js/vendor/require.js"></script>
+    </head>
+    <body>
+        <script>
+            require(['../ButtonStackSelector/buttonStackSelector.js'],
+            function(widgetLibrary) {
+                var w = new widgetLibrary.Widgets.ButtonStackSelector();
+                w.title = "Button Stack Selector Example";
+                w.widgetId = 1;
+                w.stacks = "220, 221, 219, 213, 214, 212, 216, 217";
+                w.buttonColor = 'btn-info';
+                w.run(null);
+              
+            });
+
+        </script>
+        <div id="dailyEZ-com-button-stack-selector-widget1"></div>
+    </body>
+</html>

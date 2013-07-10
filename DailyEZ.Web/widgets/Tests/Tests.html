@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>QUnit Test Suite</title>
+    <link rel="home" id="ApplicationRoot" href="../../" />
+    <link rel="stylesheet" href="qunit-1.12.0.css" type="text/css" media="screen">
+    
+    <!--Widget CSS and Required Bootstrap-->
+    <link rel="stylesheet" href="../../css/widgets.css" />
+    <link rel="stylesheet" href="../../css/dailyEZBootstrap.css"/>
+    
+
+    <script type="text/javascript" src="qunit-1.12.0.js"></script>
+    <!--Turn off tests auto starting-->
+    <script>
+        QUnit.config.autostart = false;
+    </script>
+
+    <!--RequireJS and the test suite-->
+    <script src="require-config.js"></script>
+    <script src="../../js/vendor/require.js" data-main="testsuite.js"></script>
+    
+   
+</head>
+    <body>
+        <div id="qunit"></div>
+       <!--require(["../widgets/ButtonStackSelector/ButtonStackSelectorWidget.ashx?title=South+Central+Wisconsin+Link+Menus&widgetID=4&buttonColor=btn-info&stacks=220,221,219,213,214,212,216,217,"]);-->
+        <div id="quint-fixture">
+            <div id="dailyEZ-com-button-stack-selector-widget1">hi</div>
+        </div>
+    </body>
+</html>
