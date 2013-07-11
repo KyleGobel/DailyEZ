@@ -4,7 +4,8 @@
         "AdGroup/adGroupTests",
         "ButtonPage/buttonPageWidgetTests",
         "LinkPage/linkPageTests",
-        "PageStackSelector/pageStackSelectorTests"
+        "PageStackSelector/pageStackSelectorTests",
+        "Rss/rssTests"
     ];
     
     require(testModules, function () {
