@@ -1,7 +1,8 @@
 ﻿(function () {
     var testModules = [
         "ButtonStackSelector/ButtonStackSelectorTests",
-        "AdGroup/adGroupTests"
+        "AdGroup/adGroupTests",
+        "ButtonPage/buttonPageWidgetTests"
     ];
     
     require(testModules, function () {
