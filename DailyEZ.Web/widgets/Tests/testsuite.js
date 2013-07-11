@@ -3,7 +3,8 @@
         "ButtonStackSelector/ButtonStackSelectorTests",
         "AdGroup/adGroupTests",
         "ButtonPage/buttonPageWidgetTests",
-        "LinkPage/linkPageTests"
+        "LinkPage/linkPageTests",
+        "PageStackSelector/pageStackSelectorTests"
     ];
     
     require(testModules, function () {
