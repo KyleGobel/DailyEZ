@@ -31,7 +31,7 @@ namespace DailyEZ.Web.Code
 
             int clientID = Utility.GetIntFromCookie(Request, "clientID");
             if (HttpContext.Current.IsDebuggingEnabled) 
-                clientID = 768;
+                clientID = 1;
             if (clientID == 0)
             {
                 //DON'T TOUCH ANYTHING BETWEEN THESE LINES
@@ -74,7 +74,19 @@ namespace DailyEZ.Web.Code
                 return;
             }
             JetNettClient = Uow.Clients.GetById(clientID);
-            DailyEZObject1 = Uow.DailyEZs.GetAll().Single(d => d.ClientId == JetNettClient.Id);
+            if (JetNettClient == null)
+            {
+                Response.Write("No Client exists for ID: " + clientID);
+                return;
+            }
+           
+            DailyEZObject1 = Uow.DailyEZs.GetAll().SingleOrDefault(d => d.ClientId == JetNettClient.Id);
+            if (DailyEZObject1 == null)
+            {
+                Response.Write("There is no DailyEZ associated with this Client.  ID: " + clientID);
+            }
+          
+           
             DailyEZObject = WebService.GetDailyEZByClientID(ConfigurationManager.AppSettings["webServiceKey"], clientID);
             
         }

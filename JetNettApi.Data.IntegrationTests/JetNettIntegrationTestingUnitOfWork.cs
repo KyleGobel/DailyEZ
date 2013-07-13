@@ -52,6 +52,10 @@ namespace JetNettApi.Data.IntegrationTests
         public ILinksRepository Links { get { return RepositoryProvider.GetRepository<ILinksRepository>(); } }
         public IAdGroupAssignmentsRepository AdGroupAssignments { get { return RepositoryProvider.GetRepository<IAdGroupAssignmentsRepository>();  }  }
         public IRepository<DailyEZ> DailyEZs { get { return RepositoryProvider.GetRepositoryForEntityType<DailyEZ>(); } }
+        public IRepository<AdGroup> AdGroups { get { return RepositoryProvider.GetRepositoryForEntityType<AdGroup>(); } }
+        public IRepository<Ad> Ads { get; private set; }
+        public IRepository<AdAssignment> AdAssignments { get; private set; }
+
         public void Dispose()
         {
             DbContext.Dispose();

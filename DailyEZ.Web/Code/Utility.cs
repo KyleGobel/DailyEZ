@@ -138,6 +138,11 @@ namespace DailyEZ.Web.Code
                 else
                     throw;
             }
+            catch (ArgumentException e)
+            {
+                //URI formats not supported exception
+                return false;
+            }
         }
 
         /// <summary>

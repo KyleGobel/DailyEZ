@@ -46,5 +46,8 @@ namespace JetNettApi.Data.Tests.Repository_Tests
         public IRepository<Stack> Stacks { get; private set; }
         public ILinksRepository Links { get; private set; }
         public IRepository<DailyEZ> DailyEZs { get; private set; }
+        public IRepository<AdGroup> AdGroups { get; private set; }
+        public IRepository<Ad> Ads { get; private set; }
+        public IRepository<AdAssignment> AdAssignments { get; private set; }
     }
 }

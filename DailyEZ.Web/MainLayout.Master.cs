@@ -19,6 +19,14 @@ namespace DailyEZ.Web
 
                 return;
             }
+
+            if (BasePage.DailyEZObject1 == null)
+            {
+                var ex = new ArgumentNullException("BasePage.DailyEZObject", "DailyEZ Object is Null");
+                ErrorLog.GetDefault(HttpContext.Current).Log(new Error(ex));
+
+                return;                
+            }
             
             if (BasePage.JetNettClient.WebsiteTitle != null)
                 Page.Title = BasePage.JetNettClient.WebsiteTitle;
