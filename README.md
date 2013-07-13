@@ -3,7 +3,4 @@ DailyEZ
 
 Widget Docs
 ----------
-[Button Stack Selector][1]
-
-
-  [1]: /blob/master/Docs/Widgets/ButtonStackSelectorWidget.md
+Check the wiki for the documentation (in progress)
