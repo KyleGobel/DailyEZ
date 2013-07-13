@@ -3,15 +3,19 @@ using System.Configuration;
 using System.Web;
 using DailyEZ.Web.Code;
 using Elmah;
+using Ninject;
 
 namespace DailyEZ.Web
 {
     public partial class MainLayout : System.Web.UI.MasterPage
     {
         public string AnalyticsKey = "";
+        [Inject]
+        public Renderer Renderer { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            
+            
             if (BasePage.JetNettClient == null)
             {
                 var ex = new ArgumentNullException("BasePage.JetNettClient", "Client Object is Null");

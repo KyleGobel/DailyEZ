@@ -49,5 +49,7 @@ namespace JetNettApi.Data.Tests.Repository_Tests
         public IRepository<AdGroup> AdGroups { get; private set; }
         public IRepository<Ad> Ads { get; private set; }
         public IRepository<AdAssignment> AdAssignments { get; private set; }
+        public IRepository<FolderOwner> FolderOwners { get; private set; }
+        public IRepository<MenuLink> MenuLinks { get; private set; }
     }
 }

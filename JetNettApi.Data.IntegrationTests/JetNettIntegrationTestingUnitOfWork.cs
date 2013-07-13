@@ -55,6 +55,8 @@ namespace JetNettApi.Data.IntegrationTests
         public IRepository<AdGroup> AdGroups { get { return RepositoryProvider.GetRepositoryForEntityType<AdGroup>(); } }
         public IRepository<Ad> Ads { get; private set; }
         public IRepository<AdAssignment> AdAssignments { get; private set; }
+        public IRepository<FolderOwner> FolderOwners { get; private set; }
+        public IRepository<MenuLink> MenuLinks { get; private set; }
 
         public void Dispose()
         {

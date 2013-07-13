@@ -3,44 +3,54 @@ using System.Configuration;
 using System.Web;
 using System.Web.UI.WebControls;
 using Elmah;
+using System.Linq;
+using JetNettApi.Data.Contracts;
+using Ninject;
 
 namespace DailyEZ.Web.Code
 {
     public class Renderer
     {
-        public static string HtmlHeader(HttpContext context)
+        private readonly IJetNettApiUnitOfWork _uow;
+
+        public Renderer(IJetNettApiUnitOfWork uow)
         {
-            if (BasePage.DailyEZObject == null)
+            _uow = uow;
+        }
+
+        public string HtmlHeader(HttpContext context)
+        {
+            if (BasePage.DailyEZObject1 == null)
             {
                 ErrorLog.GetDefault(HttpContext.Current).Log(new Error(new NullReferenceException("BasePage.DailyEZObject")));
                 return "DailyEZ Object is currently null";
             }
-            var clientID = BasePage.DailyEZObject.Client_ID;
-            int tab = Utility.GetIntFromCookie(context.Request, "tab");
-            if (tab == 0)
-                tab = 1;
+           
             string htm = "<ul class=\"nav\">";
 
+            var folderOwner = _uow.FolderOwners.GetAll().SingleOrDefault(f => f.ClientId == BasePage.JetNettClient.Id);
 
-            int menuFolderID =
-                BasePage.WebService.GetMenuFolderFromClient(ConfigurationManager.AppSettings["webServiceKey"], clientID);
-            var dailyEZ = BasePage.DailyEZObject;
+            if (folderOwner == null)
+            {
+                //client owns no folder, report error
+                ErrorLog.GetDefault(HttpContext.Current).Log(new Error(new NullReferenceException("Renderer.HtmlHeader.folderOwner")));
+                return "";
+            }
 
-            com.dailyez.MenuLinks[] tabs =
-                BasePage.WebService.GetMenuLinksByFolder(ConfigurationManager.AppSettings["webServiceKey"], menuFolderID);
+            var menuLinks = _uow.MenuLinks.GetAll().Where(m => m.FolderId == folderOwner.FolderId);
 
-            int counter = 1;
-            //add one to tab so it's 1 based instead of 0 based (so it matches the counter)
-            if (tab == 0)
-                tab++;
+            if (!menuLinks.Any())
+            {
+                //client owns no folder, report error
+                ErrorLog.GetDefault(HttpContext.Current).Log(new Error(new Exception("Renderer.HtmlHeader.menuLinks contains 0 elements")));
+                return "";
+            }
 
-            string serverName = context.Request.ServerVariables["SERVER_NAME"];
             // if (serverName == "thedailyez.com" || serverName == "www.thedailyez.com")
-            serverName = dailyEZ.User_Friendly_URL.Replace("http://", "");
+            var serverName = BasePage.DailyEZObject1.UserFriendlyUrl.Replace("http://", "");
            
             //get our current address we're at
             var currentAddress = context.Request.ServerVariables["SERVER_NAME"] + context.Request.ServerVariables["URL"];
-
 
             //make some formatting changes
             //remove the DailyEZ directory
@@ -50,9 +60,9 @@ namespace DailyEZ.Web.Code
             //get rid of protocol if it's there
             currentAddress = currentAddress.Replace("http://", "");
 
-            foreach (com.dailyez.MenuLinks menuLink in tabs)
+            foreach (var menuLink in menuLinks)
             {
-                var tabUrl = serverName + "/" + menuLink.URL;
+                var tabUrl = serverName + "/" + menuLink.Url;
                 var extraStyle = "";
                 //if we're on the page, make it the active tab
                 context.Response.Write("<!--Current Address:" + currentAddress + " Check Address: " + tabUrl + "\n\n\t-->\n\n");
@@ -62,11 +72,10 @@ namespace DailyEZ.Web.Code
                 }
 
                 htm += "<li" + extraStyle + "><a href='http://" + tabUrl + "'>" + HttpUtility.HtmlEncode(menuLink.Title) + "</a></li>";
-                counter++;
+              
             }
             htm += "</ul>\n";
             return htm;
-
         }
 
         public static bool RenderJetNettAdsToLiteral(Literal Ads, HttpRequest request)
